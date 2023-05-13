@@ -12,6 +12,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography.X509Certificates;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Protection.PlayReady;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -44,19 +45,12 @@ namespace OCA
         public async void GetData() 
         {
             try {
-                HttpClientHandler handler = new HttpClientHandler();
-                handler.CookieContainer = new CookieContainer();
-                HttpClient client = new HttpClient(handler);
-
-                ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                
+                HttpClient client = new HttpClient();
 
                 client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
-                client.DefaultRequestHeaders.Add("accept-encoding","gzip, deflate, br");
-                client.DefaultRequestHeaders.Add("accept-language","en-US,en;q=0.9,hi;q=0.8");
-
+                
                 HttpResponseMessage response = await client.GetAsync(url);
-                Debug.WriteLine(response.StatusCode);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -74,22 +68,6 @@ namespace OCA
                     Debug.WriteLine(responseHeadders);
                 }
 
-
-
-                //WebClient client = new WebClient();
-                //client.Headers.Add(HttpRequestHeader.UserAgent, "/");
-                //String response = client.DownloadString(url);
-
-                /*
-                Uri uri = new Uri(url);
-                ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                WebRequest webRequest = WebRequest.Create("https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY/");
-                WebResponse webResponse = webRequest.GetResponse();
-                //ReadFrom(webResponse.GetResponseStream());*/
-
-
-                Debug.WriteLine("Hi3");
                 Debug.WriteLine(response.RequestMessage);
             }
             catch(Exception ex) 
@@ -98,9 +76,5 @@ namespace OCA
             }
         }
 
-        private bool AcceptAllCertifications(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
     }
 }
