@@ -43,3 +43,4 @@ D:\Git\OCA\OCA\obj\x86\Debug\qualifiers.txt.intermediate
 D:\Git\OCA\OCA\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 D:\Git\OCA\OCA\obj\x86\Debug\ProjectArchitectures.txt
 D:\Git\OCA\OCA\obj\x86\Debug\.winmd_cache\$Microsoft.UI.Xaml.Markup.winmd_638017667300000000.json
+D:\Git\OCA\OCA\bin\x86\Debug\Newtonsoft.Json.dll

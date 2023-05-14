@@ -10,6 +10,7 @@ using System.Net.Security;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Protection.PlayReady;
@@ -22,6 +23,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -59,22 +62,41 @@ namespace OCA
                     HttpResponseMessage responseHeadders = await client.GetAsync(requestUri);
 
                     string responseBody = await responseHeadders.Content.ReadAsStringAsync();
-                    Debug.WriteLine(responseBody);
 
-                    // Do something with the content
-                    Debug.WriteLine(requestUri);
-                    
+                    // Parse the JSON string into a JObject
+                    JObject jsonObject = JObject.Parse(responseBody);
 
-                    Debug.WriteLine(responseHeadders);
+                    // Extract the string value from the JSON 
+                    JToken expiryDates = jsonObject.SelectToken("records.expiryDates");
+                    JToken data = jsonObject.SelectToken("records.data");
+                    JToken timestamp = jsonObject.SelectToken("records.timestamp");
+                    JToken underlyingvalue = jsonObject.SelectToken("records.underlyingValue");
+                    JToken strikeprices = jsonObject.SelectToken("records.strikePrices");
+
+                    JToken filtered = jsonObject.SelectToken("filtered.data");
+                    JToken cE = jsonObject.SelectToken("filtered.CE");
+                    JToken pE = jsonObject.SelectToken("filtered.PE");
+
+                    string expiryDate = expiryDates.ToString();             // use it Directly.
+                    string dataData = data.ToString();                      
+                    string timeStamp = timestamp.ToString();                // use it Directly.
+                    string underlyingValue = underlyingvalue.ToString();    // use it Directly.
+                    string strikePrices = strikeprices.ToString();          // use it Directly.
+
+                    string filteredData = filtered.ToString();          // use it Directly.
+                    string cEData = cE.ToString();          // use it Directly.
+                    string pEData = pE.ToString();          // use it Directly.
+                        
+                    List<Datum> DatumData = JsonConvert.DeserializeObject<List<Datum>>(dataData);
+                    List<Filtered> FilteredData = JsonConvert.DeserializeObject<List<Filtered>>(filteredData);
+                 
+
                 }
-
-                Debug.WriteLine(response.RequestMessage);
             }
             catch(Exception ex) 
             { 
                 Debug.WriteLine("Exception Thrown :" +ex); 
             }
         }
-
     }
 }
