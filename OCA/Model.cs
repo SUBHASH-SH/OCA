@@ -40,9 +40,11 @@ namespace OCA
         public CE CE { get; set; }
     }
 
+
     public class Filtered
     {
-        public List<Datum> data { get; set; }
+        public int strikePrice { get; set; }
+        public string expiryDate { get; set; }
         public CE CE { get; set; }
         public PE PE { get; set; }
     }

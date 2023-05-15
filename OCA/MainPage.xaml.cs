@@ -25,6 +25,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Collections.Specialized;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -74,21 +75,56 @@ namespace OCA
                     JToken strikeprices = jsonObject.SelectToken("records.strikePrices");
 
                     JToken filtered = jsonObject.SelectToken("filtered.data");
-                    JToken cE = jsonObject.SelectToken("filtered.CE");
-                    JToken pE = jsonObject.SelectToken("filtered.PE");
+                    JToken cE = jsonObject.SelectToken("filtered.CE.totOI");
+                    JToken pE = jsonObject.SelectToken("filtered.PE.totOI");
 
                     string expiryDate = expiryDates.ToString();             // use it Directly.
                     string dataData = data.ToString();                      
-                    string timeStamp = timestamp.ToString();                // use it Directly.
-                    string underlyingValue = underlyingvalue.ToString();    // use it Directly.
-                    string strikePrices = strikeprices.ToString();          // use it Directly.
+                    string timeStamp = timestamp.ToString();               // use it Directly.
+                    double number = double.Parse(underlyingvalue.ToString());
+                    int underlyingVal = (int)number;
+                    string strikePrices = strikeprices.ToString();  // use it Directly.
 
-                    string filteredData = filtered.ToString();          // use it Directly.
-                    string cEData = cE.ToString();          // use it Directly.
-                    string pEData = pE.ToString();          // use it Directly.
+                    string filteredData = filtered.ToString();
+                    double cEData = double.Parse(cE.ToString());          // use it Directly.
+                    double pEData = double.Parse(pE.ToString());          // use it Directly.
                         
                     List<Datum> DatumData = JsonConvert.DeserializeObject<List<Datum>>(dataData);
                     List<Filtered> FilteredData = JsonConvert.DeserializeObject<List<Filtered>>(filteredData);
+
+
+                    //List<Filtered> getSupport = new List<Filtered>();
+                    //List<Filtered> getResistance = new List<Filtered>();
+
+
+                    //Sentiment Analysis
+                    double pcr = pEData / cEData;
+                    Debug.WriteLine(Math.Round(pcr, 2));
+
+                    int[] ceOi = new int[15];
+                    int count = 0;
+
+                    foreach (Filtered str in FilteredData) 
+                    {
+
+                        if (str.strikePrice > underlyingVal) {
+                            //Debug.WriteLine(str.PE.changeinOpenInterest);
+                           
+                            if (count < 14)
+                            {
+                                ceOi[count] = (int)str.CE.openInterest;
+                            }
+                            count++;
+                        }
+                         
+                        
+                    }
+                    
+                    foreach (Filtered str in FilteredData.Reverse<Filtered>())
+                    {
+                        Debug.WriteLine(str.strikePrice);
+                    }
+                    
                  
 
                 }
