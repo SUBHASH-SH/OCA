@@ -18,7 +18,7 @@
 
         <controls:DataGrid x:Name="dataGrid1"  HeadersVisibility="Column" AlternatingRowBackground="LightGray"
             Height="800" Width ="1490"
-            ItemsSource="{x:Bind OIViewModel1}" Canvas.Left="50" Canvas.Top="160" HorizontalAlignment="Center" VerticalAlignment="Center" AutoGenerateColumns="False" IsReadOnly="True">
+            ItemsSource="{x:Bind OIViewModel}" Canvas.Left="50" Canvas.Top="160" HorizontalAlignment="Center" VerticalAlignment="Center" AutoGenerateColumns="False" IsReadOnly="True">
             <controls:DataGrid.CellStyle>
                 <Style TargetType="controls:DataGridCell">
                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -83,6 +83,7 @@
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <TextBox x:Name="pcrText" TextAlignment="Center" Canvas.Left="474" TextWrapping="Wrap" Text="PCR - 1.8" Canvas.Top="50" Height="38" Width="160" FontSize="20" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button x:Name="updateData" Content="UPDATE" Canvas.Left="1592" Canvas.Top="48" Width="218" VerticalAlignment="Top" HorizontalAlignment="Center" Height="57" FontSize="36" Click="updateData_Click"/>
     </Canvas>
 
 </Page>

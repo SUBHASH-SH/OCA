@@ -9,6 +9,9 @@ using Windows.UI.Xaml.Controls;
 using static OCA.OIViewModel1;
 using Windows.Storage;
 using System.Collections.Specialized;
+using System.IO;
+using System.Timers;
+using System.Threading.Tasks;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -16,32 +19,89 @@ using System.Collections.Specialized;
 namespace OCA
 {
 
-    
+    public class OIViewModel1
+    {
+        
 
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainPage : Page
+        public String CeInterpretation { get; set; }
+        public String CeOi { get; set; }
+        public String CeCoi { get; set; }
+        public String CeVolume { get; set; }
+        public String CePchng { get; set; }
+        public String StrikePrice { get; set; }
+        public String PePchng { get; set; }
+        public String PeVolume { get; set; }
+        public String PeCoi { get; set; }
+        public String PeOi { get; set; }
+        public String PeInterpretation { get; set; }
+
+        public OIViewModel1(String CeInterpretation, String CeOi, String CeCoi, String CeVolume, String CePchng, String StrikePrice, String PePchng, String PeVolume, String PeCoi, String PeOi, String PeInterpretation)
+        {
+            this.CeInterpretation = CeInterpretation;
+            this.CeOi = CeOi;
+            this.CeCoi = CeCoi;
+            this.CeVolume = CeVolume;
+            this.CePchng = CePchng;
+            this.StrikePrice = StrikePrice;
+            this.PePchng = PePchng;
+            this.PeVolume = PeVolume;
+            this.PeCoi = PeCoi;
+            this.PeOi = PeOi;
+            this.PeInterpretation = PeInterpretation;
+        }
+    }
+
+        /// <summary>
+        /// An empty page that can be used on its own or navigated to within a Frame.
+        /// </summary>
+        public sealed partial class MainPage : Page
     {
         String url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
         // how to get response form ssl encreption
-
-        private List<OIViewModel1> OIViewModel1;
+        int inc = 0;
+        Timer timer = new Timer();
+        private List<OIViewModel1> OIViewModel { get; set; }
         
 
         public MainPage()
         {
+            
             this.InitializeComponent();
+
+            // timer to call MyMethod() every minutes 
+            //for (int i = 0;i < 5;i++) 
+            //{
+
+            //   inc++;
             GetData();
-
-            //viewModel = this.DataContext as Customer;
-            OIViewModel1 = OIViewModelManager.GetCustomers();
-
-            //GetData();
-            //updateData();
             
 
+            
 
+            //}
+
+        }
+
+        private async void updateOiData()
+        {
+
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile sampleFile = await storageFolder.GetFileAsync("myconfig0.json");
+            string file2 = await FileIO.ReadTextAsync(sampleFile);
+            List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
+            //foreach (Filtered flr in FilteredData2)
+            //{
+            //OIViewModel = new List<OIViewModel1> { new OIViewModel1("sdf", "+500", "+200", "24562", "45", "19000 ", "20", "205040", "+200", "+800", "Short Buildup") };
+            //}
+
+            OIViewModel = new List<OIViewModel1>();
+            for (int i = 0;i < 4;i++) 
+            {
+                OIViewModel1 oIViewModel = new OIViewModel1(i.ToString(), "+500", "+200", "24562", "45", "19000 ", "20", "205040", "+200", "+800", "Short Buildup");
+                
+                OIViewModel.Add(oIViewModel);
+            }
+            dataGrid1.ItemsSource = OIViewModel;
         }
 
         public async void GetData() 
@@ -121,9 +181,10 @@ namespace OCA
 
                     int count = 0;
 
-                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("myconfig.json");
-                    await FileIO.AppendTextAsync(file, "{ \"data\" : [");
-
+                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("myconfig"+inc+ ".json");
+                    
+                    await FileIO.AppendTextAsync(file, "[");
+                    
                     //for first time
                     foreach (Filtered str in FilteredData) 
                     {
@@ -138,9 +199,11 @@ namespace OCA
                                 string json = JsonConvert.SerializeObject(str);
                                 // write string to a file
                                 await FileIO.AppendTextAsync(file, json);
+                                
 
                                 if (count < 16) {
-                                    await FileIO.AppendTextAsync(file, ",");
+                                   await FileIO.AppendTextAsync(file, ",");
+                                    
                                 };
 
                                 Debug.WriteLine(str.strikePrice);
@@ -152,18 +215,17 @@ namespace OCA
                         
 
                     }
-                    await FileIO.AppendTextAsync(file, "]}");
-
-                    var file2 = await ApplicationData.Current.LocalFolder.GetFileAsync("myconfig.json");
-                    Debug.WriteLine(file2);
-                    foreach(Filtered flr in getCE0) 
+                    await FileIO.AppendTextAsync(file, "]");
+                    StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                    StorageFile sampleFile = await storageFolder.GetFileAsync("myconfig0.json");
+                    string file2 = await FileIO.ReadTextAsync(sampleFile);
+                    List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
+                    List<OIViewModel1> models2 = new List<OIViewModel1>();
+                    foreach (Filtered flr in FilteredData2)
                     {
-                        Debug.WriteLine(flr.CE.openInterest);
                         
+
                     }
-
-
-
 
 
                 }
@@ -172,6 +234,11 @@ namespace OCA
             { 
                 Debug.WriteLine("Exception Thrown :" +ex); 
             }
+        }
+
+        private void updateData_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            updateOiData();
         }
     }
 
