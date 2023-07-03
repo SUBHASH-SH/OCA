@@ -89,18 +89,13 @@ namespace OCA
             StorageFile sampleFile = await storageFolder.GetFileAsync("myconfig0.json");
             string file2 = await FileIO.ReadTextAsync(sampleFile);
             List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
-            //foreach (Filtered flr in FilteredData2)
-            //{
-            //OIViewModel = new List<OIViewModel1> { new OIViewModel1("sdf", "+500", "+200", "24562", "45", "19000 ", "20", "205040", "+200", "+800", "Short Buildup") };
-            //}
-
             OIViewModel = new List<OIViewModel1>();
-            for (int i = 0;i < 4;i++) 
+            foreach (Filtered flr in FilteredData2)
             {
-                OIViewModel1 oIViewModel = new OIViewModel1(i.ToString(), "+500", "+200", "24562", "45", "19000 ", "20", "205040", "+200", "+800", "Short Buildup");
-                
+                OIViewModel1 oIViewModel = new OIViewModel1("Short Buildup",flr.CE.openInterest.ToString(), flr.CE.changeinOpenInterest.ToString(), flr.CE.totalTradedVolume.ToString(), flr.CE.lastPrice.ToString(), flr.CE.strikePrice.ToString(), flr.PE.lastPrice.ToString(), flr.PE.totalTradedVolume.ToString(), flr.PE.changeinOpenInterest.ToString(), flr.PE.openInterest.ToString(), "Short Buildup");
                 OIViewModel.Add(oIViewModel);
-            }
+            }  
+
             dataGrid1.ItemsSource = OIViewModel;
         }
 
