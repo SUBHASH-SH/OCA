@@ -73,7 +73,7 @@ namespace OCA
             //{
 
             //   inc++;
-            GetData();
+            //GetData();
             
 
             
@@ -86,13 +86,42 @@ namespace OCA
         {
 
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile = await storageFolder.GetFileAsync("myconfig0.json");
-            string file2 = await FileIO.ReadTextAsync(sampleFile);
+            StorageFile sampleFile1 = await storageFolder.GetFileAsync("myconfig0.json");
+            string file1 = await FileIO.ReadTextAsync(sampleFile1);
+            List<Filtered> FilteredData1 = JsonConvert.DeserializeObject<List<Filtered>>(file1);
+
+            StorageFile sampleFile2 = await storageFolder.GetFileAsync("myconfig1.json");
+            string file2 = await FileIO.ReadTextAsync(sampleFile2);
             List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
+
             OIViewModel = new List<OIViewModel1>();
-            foreach (Filtered flr in FilteredData2)
+
+            
+            foreach (var Data in FilteredData1.Zip(FilteredData2, (a,b) => new { A = a, B = b }))
             {
-                OIViewModel1 oIViewModel = new OIViewModel1("Short Buildup",flr.CE.openInterest.ToString(), flr.CE.changeinOpenInterest.ToString(), flr.CE.totalTradedVolume.ToString(), flr.CE.lastPrice.ToString(), flr.CE.strikePrice.ToString(), flr.PE.lastPrice.ToString(), flr.PE.totalTradedVolume.ToString(), flr.PE.changeinOpenInterest.ToString(), flr.PE.openInterest.ToString(), "Short Buildup");
+                Filtered data1 = Data.A;
+                Filtered data2 = Data.B;
+
+                int CeOi1 = (int)data1.CE.openInterest, CeCoi1 = (int)data1.CE.changeinOpenInterest,
+                            CeVolume1 = data1.CE.totalTradedVolume,  CePchng1 = (int)data1.CE.lastPrice,
+                            PePchng1 = (int)data1.PE.lastPrice,  PeVolume1 = data1.PE.totalTradedVolume,
+                            PeCoi1 = (int)data1.PE.changeinOpenInterest, PeOi1 = (int)data1.PE.openInterest;
+
+                int CeOi2 = (int)data2.CE.openInterest, CeCoi2 = (int)data2.CE.changeinOpenInterest,
+                            CeVolume2 = data2.CE.totalTradedVolume, CePchng2 = (int)data2.CE.lastPrice,
+                            PePchng2 = (int)data2.PE.lastPrice, PeVolume2 = data2.PE.totalTradedVolume,
+                            PeCoi2 = (int)data2.PE.changeinOpenInterest, PeOi2 = (int)data2.PE.openInterest;
+
+                OIViewModel1 oIViewModel = new OIViewModel1("Short Buildup",(CeOi1 - CeOi2).ToString(),
+                                                                            (CeCoi1 - CeCoi2).ToString(),
+                                                                            (CeVolume1 - CeVolume2).ToString(),
+                                                                            (CePchng1 - CePchng2).ToString(),
+                                                                            data1.CE.strikePrice.ToString(),
+                                                                            (PePchng1 - PePchng2).ToString(),
+                                                                            (PeVolume1 - PeVolume2).ToString(),
+                                                                            (PeCoi1 - PeCoi2).ToString(),
+                                                                            (PeOi1 - PeOi2).ToString(),
+                                                            "Short Buildup");
                 OIViewModel.Add(oIViewModel);
             }  
 
@@ -211,7 +240,7 @@ namespace OCA
 
                     }
                     await FileIO.AppendTextAsync(file, "]");
-                    StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                    /*StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
                     StorageFile sampleFile = await storageFolder.GetFileAsync("myconfig0.json");
                     string file2 = await FileIO.ReadTextAsync(sampleFile);
                     List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
@@ -221,7 +250,7 @@ namespace OCA
                         
 
                     }
-
+*/
 
                 }
             }
