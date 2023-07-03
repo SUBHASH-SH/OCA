@@ -48,10 +48,21 @@
       <RootProperty Name="Height" />
       <RootProperty Name="Width" />
       <RootProperty Name="ItemsSource" />
-      <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="AutoGenerateColumns" />
+      <RootProperty Name="HorizontalContentAlignment" />
+      <RootProperty Name="VerticalContentAlignment" />
       <RootProperty Name="IsReadOnly" />
+      <RootProperty Name="FontStyle" />
+      <RootProperty Name="RequestedTheme" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="BorderThickness" />
+      <RootProperty Name="GridLinesVisibility" />
+      <RootProperty Name="XYFocusDownNavigationStrategy" />
+      <RootProperty Name="AreRowDetailsFrozen" />
+      <RootProperty Name="RowBackground" />
+      <RootProperty Name="AutoGenerateColumns" />
+      <RootProperty Name="ColumnWidth" />
+      <RootProperty Name="HorizontalGridLinesBrush" />
+      <RootProperty Name="VerticalGridLinesBrush" />
       <RootProperty Name="CellStyle" />
       <RootProperty Name="Columns" />
     </RootType>
@@ -59,15 +70,18 @@
       <RootProperty Name="Content" />
       <RootProperty Name="Width" />
       <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="Height" />
       <RootProperty Name="FontSize" />
       <RootEvent Name="Click" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.BindExtension" />
+    <RootType FullName="Windows.UI.Xaml.Media.SolidColorBrush">
+      <RootProperty Name="Color" />
+      <RootProperty Name="Opacity" />
+    </RootType>
     <RootType FullName="Microsoft.Toolkit.Uwp.UI.Controls.DataGridCell" />
-    <RootType FullName="Windows.UI.Xaml.FrameworkElement">
-      <RootProperty Name="HorizontalAlignment" />
+    <RootType FullName="Windows.UI.Xaml.Controls.Control">
+      <RootProperty Name="HorizontalContentAlignment" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Setter">
       <RootProperty Name="Property" />
@@ -78,6 +92,11 @@
       <RootProperty Name="Width" />
       <RootProperty Name="Binding" />
       <RootProperty Name="FontSize" />
+      <RootProperty Name="FontStyle" />
+      <RootProperty Name="IsReadOnly" />
+      <RootProperty Name="MaxWidth" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="Foreground" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Data.Binding" />
     <RootType FullName="OCA.MainPage" />

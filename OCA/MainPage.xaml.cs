@@ -96,7 +96,6 @@ namespace OCA
 
             OIViewModel = new List<OIViewModel1>();
 
-            
             foreach (var Data in FilteredData1.Zip(FilteredData2, (a,b) => new { A = a, B = b }))
             {
                 Filtered data1 = Data.A;
