@@ -1,36 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Security;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Media.Protection.PlayReady;
-using Windows.System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Shapes;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Windows.UI.Xaml.Controls;
+using static OCA.OIViewModel1;
+using Windows.Storage;
 using System.Collections.Specialized;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace OCA
 {
+
+    
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -38,12 +25,23 @@ namespace OCA
     {
         String url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
         // how to get response form ssl encreption
+
+        private List<OIViewModel1> OIViewModel1;
         
+
         public MainPage()
         {
             this.InitializeComponent();
             GetData();
-           
+
+            //viewModel = this.DataContext as Customer;
+            OIViewModel1 = OIViewModelManager.GetCustomers();
+
+            //GetData();
+            //updateData();
+            
+
+
         }
 
         public async void GetData() 
@@ -54,15 +52,18 @@ namespace OCA
 
                 client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
                 
-                HttpResponseMessage response = await client.GetAsync(url);
+                HttpResponseMessage response = client.GetAsync(url).Result;
+
+               
 
                 if (response.IsSuccessStatusCode)
                 {
                     // Read the content of the response as a string
                     var requestUri = response.RequestMessage.RequestUri;
-                    HttpResponseMessage responseHeadders = await client.GetAsync(requestUri);
+                    HttpResponseMessage responseHeadders = client.GetAsync(requestUri).Result;
 
-                    string responseBody = await responseHeadders.Content.ReadAsStringAsync();
+                    string responseBody = responseHeadders.Content.ReadAsStringAsync().Result;
+                    
 
                     // Parse the JSON string into a JObject
                     JObject jsonObject = JObject.Parse(responseBody);
@@ -85,47 +86,85 @@ namespace OCA
                     int underlyingVal = (int)number;
                     string strikePrices = strikeprices.ToString();  // use it Directly.
 
+                    IndexText.Text = underlyingVal.ToString();
+
                     string filteredData = filtered.ToString();
                     double cEData = double.Parse(cE.ToString());          // use it Directly.
                     double pEData = double.Parse(pE.ToString());          // use it Directly.
-                        
+
+                    //Sentiment Analysis
+                    double pcr = pEData / cEData;
+                    String pcrValue = Math.Round(pcr, 2).ToString();
+
+                    pcrText.Text = "PCR - " + pcrValue;
+
+                    Model.expiryDate = expiryDate;
+
+
+
                     List<Datum> DatumData = JsonConvert.DeserializeObject<List<Datum>>(dataData);
                     List<Filtered> FilteredData = JsonConvert.DeserializeObject<List<Filtered>>(filteredData);
 
 
-                    //List<Filtered> getSupport = new List<Filtered>();
-                    //List<Filtered> getResistance = new List<Filtered>();
+                    List<Filtered> getCE0 = new List<Filtered>();
+                    List<Filtered> getCE1 = new List<Filtered>();
+                    List<Filtered> getCE2 = new List<Filtered>();
+                    List<Filtered> getCE3 = new List<Filtered>();
+                    List<Filtered> getCE4 = new List<Filtered>();
+                    List<Filtered> getCE5 = new List<Filtered>();
+                    List<Filtered> getCE6 = new List<Filtered>();
+                    List<Filtered> getCE7 = new List<Filtered>();
+                    List<Filtered> getPE = new List<Filtered>();
 
 
-                    //Sentiment Analysis
-                    double pcr = pEData / cEData;
-                    Debug.WriteLine(Math.Round(pcr, 2));
+                    
 
-                    int[] ceOi = new int[15];
                     int count = 0;
 
+                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("myconfig.json");
+                    await FileIO.AppendTextAsync(file, "{ \"data\" : [");
+
+                    //for first time
                     foreach (Filtered str in FilteredData) 
                     {
+                        
 
-                        if (str.strikePrice > underlyingVal) {
-                            //Debug.WriteLine(str.PE.changeinOpenInterest);
-                           
-                            if (count < 14)
+                        if (str.strikePrice > underlyingVal - 400) //18,398
+                        {
+
+                            if (count < 17)
                             {
-                                ceOi[count] = (int)str.CE.openInterest;
+
+                                string json = JsonConvert.SerializeObject(str);
+                                // write string to a file
+                                await FileIO.AppendTextAsync(file, json);
+
+                                if (count < 16) {
+                                    await FileIO.AppendTextAsync(file, ",");
+                                };
+
+                                Debug.WriteLine(str.strikePrice);
+
                             }
+                            
                             count++;
                         }
-                         
+                        
+
+                    }
+                    await FileIO.AppendTextAsync(file, "]}");
+
+                    var file2 = await ApplicationData.Current.LocalFolder.GetFileAsync("myconfig.json");
+                    Debug.WriteLine(file2);
+                    foreach(Filtered flr in getCE0) 
+                    {
+                        Debug.WriteLine(flr.CE.openInterest);
                         
                     }
-                    
-                    foreach (Filtered str in FilteredData.Reverse<Filtered>())
-                    {
-                        Debug.WriteLine(str.strikePrice);
-                    }
-                    
-                 
+
+
+
+
 
                 }
             }
@@ -135,4 +174,5 @@ namespace OCA
             }
         }
     }
+
 }

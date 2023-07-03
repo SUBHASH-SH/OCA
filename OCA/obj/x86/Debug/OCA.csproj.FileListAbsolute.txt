@@ -1,3 +1,4 @@
+D:\Git\OCA\OCA\bin\x86\Debug\Microsoft.Toolkit.Uwp.UI.Controls.DataGrid\Microsoft.Toolkit.Uwp.UI.Controls.DataGrid.xr.xml
 D:\Git\OCA\OCA\bin\x86\Debug\App.xbf
 D:\Git\OCA\OCA\bin\x86\Debug\MainPage.xbf
 D:\Git\OCA\OCA\bin\x86\Debug\OCA.xr.xml
@@ -8,6 +9,9 @@ D:\Git\OCA\OCA\bin\x86\Debug\AppxManifest.xml
 D:\Git\OCA\OCA\bin\x86\Debug\Core\AppxManifest.xml
 D:\Git\OCA\OCA\bin\x86\Debug\Core\OCA.exe
 D:\Git\OCA\OCA\bin\x86\Debug\OCA.build.appxrecipe
+D:\Git\OCA\OCA\bin\x86\Debug\Microsoft.Toolkit.Uwp.UI.Controls.DataGrid.dll
+D:\Git\OCA\OCA\bin\x86\Debug\Microsoft.Toolkit.Uwp.UI.Controls.DataGrid.pdb
+D:\Git\OCA\OCA\bin\x86\Debug\Newtonsoft.Json.dll
 D:\Git\OCA\OCA\bin\x86\Debug\System.Runtime.dll
 D:\Git\OCA\OCA\bin\x86\Debug\Microsoft.UI.Xaml.Markup.winmd
 D:\Git\OCA\OCA\obj\x86\Debug\OCA.csproj.AssemblyReference.cache
@@ -23,9 +27,12 @@ D:\Git\OCA\OCA\obj\x86\Debug\MainPage.xbf
 D:\Git\OCA\OCA\obj\x86\Debug\XamlSaveStateFile.xml
 D:\Git\OCA\OCA\obj\x86\Debug\OCA.csproj.CoreCompileInputs.cache
 D:\Git\OCA\OCA\obj\x86\Debug\OCA.csproj.CopyComplete
+D:\Git\OCA\OCA\obj\x86\Debug\Microsoft.Toolkit.Uwp.UI.Controls.DataGrid.pri.xml
+D:\Git\OCA\OCA\obj\x86\Debug\Microsoft.UI.Xaml.pri.xml
 D:\Git\OCA\OCA\obj\x86\Debug\OCA.exe
 D:\Git\OCA\OCA\obj\x86\Debug\OCA.pdb
 D:\Git\OCA\OCA\obj\x86\Debug\ResourceHandlingTask.state
+D:\Git\OCA\OCA\obj\x86\Debug\Microsoft.Toolkit.Uwp.UI.Controls.DataGrid\en-US\Microsoft.Toolkit.Uwp.UI.Controls.Resources.resw
 D:\Git\OCA\OCA\obj\x86\Debug\priconfig.xml
 D:\Git\OCA\OCA\obj\x86\Debug\priconfig.xml.intermediate
 D:\Git\OCA\OCA\obj\x86\Debug\unfiltered.layout.resfiles
@@ -43,4 +50,3 @@ D:\Git\OCA\OCA\obj\x86\Debug\qualifiers.txt.intermediate
 D:\Git\OCA\OCA\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 D:\Git\OCA\OCA\obj\x86\Debug\ProjectArchitectures.txt
 D:\Git\OCA\OCA\obj\x86\Debug\.winmd_cache\$Microsoft.UI.Xaml.Markup.winmd_638017667300000000.json
-D:\Git\OCA\OCA\bin\x86\Debug\Newtonsoft.Json.dll

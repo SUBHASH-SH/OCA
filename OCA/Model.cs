@@ -10,7 +10,7 @@ namespace OCA
     public class Model
     {
         public int strikePrice { get; set; }
-        public string expiryDate { get; set; }
+        public static string expiryDate { get; set; }
         public string underlying { get; set; }
         public string identifier { get; set; }
         public double openInterest { get; set; }
