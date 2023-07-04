@@ -99,27 +99,36 @@ namespace OCA
                 Filtered data1 = Data.A;
                 Filtered data2 = Data.B;
 
-                int CeOi1 = (int)data1.CE.openInterest, CeCoi1 = (int)data1.CE.changeinOpenInterest,
-                            CeVolume1 = data1.CE.totalTradedVolume,  CePchng1 = (int)data1.CE.lastPrice,
-                            PePchng1 = (int)data1.PE.lastPrice,  PeVolume1 = data1.PE.totalTradedVolume,
+                if (data1.CE.strikePrice == data2.CE.strikePrice)
+                {
+                    int CeOi1 = (int)data1.CE.openInterest, CeCoi1 = (int)data1.CE.changeinOpenInterest,
+                            CeVolume1 = data1.CE.totalTradedVolume, CePchng1 = (int)data1.CE.lastPrice,
+                            PePchng1 = (int)data1.PE.lastPrice, PeVolume1 = data1.PE.totalTradedVolume,
                             PeCoi1 = (int)data1.PE.changeinOpenInterest, PeOi1 = (int)data1.PE.openInterest;
 
-                int CeOi2 = (int)data2.CE.openInterest, CeCoi2 = (int)data2.CE.changeinOpenInterest,
-                            CeVolume2 = data2.CE.totalTradedVolume, CePchng2 = (int)data2.CE.lastPrice,
-                            PePchng2 = (int)data2.PE.lastPrice, PeVolume2 = data2.PE.totalTradedVolume,
-                            PeCoi2 = (int)data2.PE.changeinOpenInterest, PeOi2 = (int)data2.PE.openInterest;
+                    int CeOi2 = (int)data2.CE.openInterest, CeCoi2 = (int)data2.CE.changeinOpenInterest,
+                                CeVolume2 = data2.CE.totalTradedVolume, CePchng2 = (int)data2.CE.lastPrice,
+                                PePchng2 = (int)data2.PE.lastPrice, PeVolume2 = data2.PE.totalTradedVolume,
+                                PeCoi2 = (int)data2.PE.changeinOpenInterest, PeOi2 = (int)data2.PE.openInterest;
 
-                OIViewModel1 oIViewModel = new OIViewModel1("Short Buildup",(CeOi1 - CeOi2).ToString(),
-                                                                            (CeCoi1 - CeCoi2).ToString(),
-                                                                            (CeVolume1 - CeVolume2).ToString(),
-                                                                            (CePchng1 - CePchng2).ToString(),
-                                                                            data1.CE.strikePrice.ToString(),
-                                                                            (PePchng1 - PePchng2).ToString(),
-                                                                            (PeVolume1 - PeVolume2).ToString(),
-                                                                            (PeCoi1 - PeCoi2).ToString(),
-                                                                            (PeOi1 - PeOi2).ToString(),
-                                                            "Short Buildup");
-                OIViewModel.Add(oIViewModel);
+                    OIViewModel1 oIViewModel = new OIViewModel1("Short Buildup", (CeOi1 - CeOi2).ToString(),
+                                                                                (CeCoi1 - CeCoi2).ToString(),
+                                                                                (CeVolume1 - CeVolume2).ToString(),
+                                                                                (CePchng1 - CePchng2).ToString(),
+                                                                                data1.CE.strikePrice.ToString(),
+                                                                                (PePchng1 - PePchng2).ToString(),
+                                                                                (PeVolume1 - PeVolume2).ToString(),
+                                                                                (PeCoi1 - PeCoi2).ToString(),
+                                                                                (PeOi1 - PeOi2).ToString(),
+                                                                "Short Buildup");
+                    OIViewModel.Add(oIViewModel);
+                }
+                else 
+                {
+                    updateDataBtn.Content = "RE-TRY";   
+                }
+
+                
             }  
 
             dataGrid1.ItemsSource = OIViewModel;
