@@ -12,6 +12,8 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Timers;
 using System.Threading.Tasks;
+using System.Threading;
+using Windows.UI.Xaml;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -58,8 +60,9 @@ namespace OCA
     {
         String url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
         // how to get response form ssl encreption
-        int inc = 0;
-        Timer timer = new Timer();
+        int incData = 0;
+        private DispatcherTimer timer;
+
         private List<OIViewModel1> OIViewModel { get; set; }
         
 
@@ -67,30 +70,25 @@ namespace OCA
         {
             
             this.InitializeComponent();
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
 
-            // timer to call MyMethod() every minutes 
-            //for (int i = 0;i < 5;i++) 
-            //{
-
-            //   inc++;
-            //GetData();
-            
-
-            
-
-            //}
+            // Start the timer
+            timer.Start();
 
         }
 
-        private async void updateOiData()
+        private async Task updateOiData()
         {
 
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile1 = await storageFolder.GetFileAsync("myconfig0.json");
+            StorageFile sampleFile1 = await storageFolder.GetFileAsync(incData+".json");
             string file1 = await FileIO.ReadTextAsync(sampleFile1);
             List<Filtered> FilteredData1 = JsonConvert.DeserializeObject<List<Filtered>>(file1);
 
-            StorageFile sampleFile2 = await storageFolder.GetFileAsync("myconfig1.json");
+
+            StorageFile sampleFile2 = await storageFolder.GetFileAsync(incData-1+".json");
             string file2 = await FileIO.ReadTextAsync(sampleFile2);
             List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
 
@@ -125,12 +123,13 @@ namespace OCA
             }  
 
             dataGrid1.ItemsSource = OIViewModel;
+            
         }
 
-        public async void GetData() 
+        public async Task GetData() 
         {
             try {
-                
+
                 HttpClient client = new HttpClient();
 
                 client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
@@ -163,12 +162,12 @@ namespace OCA
                     JToken pE = jsonObject.SelectToken("filtered.PE.totOI");
 
                     string expiryDate = expiryDates.ToString();             // use it Directly.
-                    string dataData = data.ToString();                      
+                    /*string dataData = data.ToString();                      
                     string timeStamp = timestamp.ToString();               // use it Directly.
+                    string strikePrices = strikeprices.ToString();  // use it Directly.*/
+
                     double number = double.Parse(underlyingvalue.ToString());
                     int underlyingVal = (int)number;
-                    string strikePrices = strikeprices.ToString();  // use it Directly.
-
                     IndexText.Text = underlyingVal.ToString();
 
                     string filteredData = filtered.ToString();
@@ -183,28 +182,13 @@ namespace OCA
 
                     Model.expiryDate = expiryDate;
 
-
-
-                    List<Datum> DatumData = JsonConvert.DeserializeObject<List<Datum>>(dataData);
                     List<Filtered> FilteredData = JsonConvert.DeserializeObject<List<Filtered>>(filteredData);
-
-
-                    List<Filtered> getCE0 = new List<Filtered>();
-                    List<Filtered> getCE1 = new List<Filtered>();
-                    List<Filtered> getCE2 = new List<Filtered>();
-                    List<Filtered> getCE3 = new List<Filtered>();
-                    List<Filtered> getCE4 = new List<Filtered>();
-                    List<Filtered> getCE5 = new List<Filtered>();
-                    List<Filtered> getCE6 = new List<Filtered>();
-                    List<Filtered> getCE7 = new List<Filtered>();
-                    List<Filtered> getPE = new List<Filtered>();
-
-
-                    
 
                     int count = 0;
 
-                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("myconfig"+inc+ ".json");
+                    //String todaysDate = DateTime.Now.ToString().Replace(':','-');
+
+                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(incData+".json");
                     
                     await FileIO.AppendTextAsync(file, "[");
                     
@@ -248,9 +232,7 @@ namespace OCA
                     {
                         
 
-                    }
-*/
-
+                    }*/
                 }
             }
             catch(Exception ex) 
@@ -259,9 +241,27 @@ namespace OCA
             }
         }
 
+        public async void ExecuteMethodsAsync()
+        {
+            await GetData(); // Wait for the first method to complete
+            if (incData > 0) {
+                await updateOiData(); // Wait for the second method to complete after the first one
+            }
+            incData++;
+        }
+
         private void updateData_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            updateOiData();
+            ExecuteMethodsAsync();
+            DateTime dateTime= DateTime.Now;
+            lastUpdateText.Text = dateTime.ToString("HH:mm:ss");
+            
+        }
+        private void Timer_Tick(object sender, object e)
+        {
+            // Update the clock label with the current time
+            DateTime CTime = DateTime.Now;
+            currentTime.Text = CTime.ToString("HH:mm:ss");
         }
     }
 

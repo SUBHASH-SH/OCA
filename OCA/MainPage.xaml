@@ -91,6 +91,9 @@
         </controls:DataGrid>
         <TextBox x:Name="pcrText" TextAlignment="Center" Canvas.Left="474" TextWrapping="Wrap" Text="PCR - 1.8" Canvas.Top="50" Height="38" Width="160" FontSize="20" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <Button x:Name="updateData" Content="UPDATE" Canvas.Left="1322" Canvas.Top="50" Width="218" VerticalAlignment="Top" Height="57" FontSize="36" Click="updateData_Click"/>
+        <TextBox x:Name="lastUpdateText" Canvas.Left="1097" TextAlignment="Center" Text="01:49:55" Canvas.Top="50" HorizontalAlignment="Left" Height="38" VerticalAlignment="Center" Width="193" FontSize="22" TextWrapping="Wrap" IsReadOnly="True"/>
+        <TextBox x:Name="currentTime" Canvas.Left="767" TextAlignment="Center" Text="01:49:55" Canvas.Top="50" Height="38" Width="193" FontSize="22" TextWrapping="Wrap" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <TextBlock Canvas.Left="994" TextWrapping="Wrap" Text="Last Update" Canvas.Top="59" FontSize="18"/>
     </Canvas>
 
 </Page>
