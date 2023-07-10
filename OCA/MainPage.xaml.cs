@@ -219,7 +219,7 @@ namespace OCA
                     JObject jsonObject = JObject.Parse(responseBody);
 
                     // Extract the string value from the JSON 
-                    JToken expiryDates = jsonObject.SelectToken("records.expiryDates");
+                    //JToken expiryDates = jsonObject.SelectToken("records.expiryDates");
                     JToken data = jsonObject.SelectToken("records.data");
                     JToken timestamp = jsonObject.SelectToken("records.timestamp");
                     JToken underlyingvalue = jsonObject.SelectToken("records.underlyingValue");
@@ -229,7 +229,7 @@ namespace OCA
                     JToken cE = jsonObject.SelectToken("filtered.CE.totOI");
                     JToken pE = jsonObject.SelectToken("filtered.PE.totOI");
 
-                    string expiryDate = expiryDates.ToString();             // use it Directly.
+                    //string expiryDate = expiryDates.ToString();             // use it Directly.
                     /*string dataData = data.ToString();                      
                     string timeStamp = timestamp.ToString();               // use it Directly.
                     string strikePrices = strikeprices.ToString();  // use it Directly.*/
@@ -248,7 +248,7 @@ namespace OCA
 
                     pcrText.Text = "PCR - " + pcrValue;
 
-                    Model.expiryDate = expiryDate;
+                    //Model.expiryDate = expiryDate;
 
                     List<Filtered> FilteredData = JsonConvert.DeserializeObject<List<Filtered>>(filteredData);
 
