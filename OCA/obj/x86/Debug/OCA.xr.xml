@@ -61,6 +61,8 @@
       <RootProperty Name="RowBackground" />
       <RootProperty Name="AutoGenerateColumns" />
       <RootProperty Name="ColumnWidth" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="HorizontalGridLinesBrush" />
       <RootProperty Name="VerticalGridLinesBrush" />
       <RootProperty Name="CellStyle" />

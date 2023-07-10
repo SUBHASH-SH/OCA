@@ -1,0 +1,100 @@
+﻿<Page x:ConnectionId='1'
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:local="using:OCA"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Custom="using:Microsoft.UI.Xaml.Controls"
+    x:Class="OCA.MainPage"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" FocusVisualPrimaryBrush="White">
+
+
+    <Canvas x:ConnectionId='2' x:Name="graphCanvas" Background="#FFB9B9B9" Margin="0,0,0,10" >
+        <TextBox x:ConnectionId='3' x:Name="Symbole" TextAlignment="Center" Canvas.Left="52" TextWrapping="Wrap" Text="NIFTY" Canvas.Top="50" Height="38" Width="160" FontSize="20" InputScope="Text" IsReadOnly="True"/>
+        <TextBox x:ConnectionId='4' x:Name="IndexText" TextAlignment="Center" Canvas.Left="262" TextWrapping="Wrap" Text="19000" Canvas.Top="50" Height="38" Width="160" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" IsReadOnly="True"/>
+
+
+        <controls:DataGrid x:ConnectionId='5' x:Name="dataGrid1"  HeadersVisibility="Column" AlternatingRowBackground="LightGray"
+            Height="800" Width ="1490"
+                                               Canvas.Left="50" Canvas.Top="160" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" FontStyle="Normal" RequestedTheme="Default" FontSize="12" BorderThickness="0,1,1,0" GridLinesVisibility="All" XYFocusDownNavigationStrategy="Auto" AreRowDetailsFrozen="True" RowBackground="White" AutoGenerateColumns="False" ColumnWidth="23">
+            <controls:DataGrid.HorizontalGridLinesBrush>
+                <SolidColorBrush Color="#66000FFF" Opacity="0.4"/>
+            </controls:DataGrid.HorizontalGridLinesBrush>
+            <controls:DataGrid.VerticalGridLinesBrush>
+                <SolidColorBrush Color="#660010FF" Opacity="0.4"/>
+            </controls:DataGrid.VerticalGridLinesBrush>
+            <controls:DataGrid.CellStyle>
+                <Style TargetType="controls:DataGridCell">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </controls:DataGrid.CellStyle>
+
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn
+                    Header="INTERPRETATION" 
+                    Width="180"
+                    Binding="{Binding CeInterpretation}" 
+                    FontSize="22" FontStyle="Normal" IsReadOnly="True" MaxWidth="180" MinWidth="180" Foreground="White" />
+                <controls:DataGridTextColumn 
+                    Header="OI" 
+                    Width="130"
+                    Binding="{Binding CeOi}" 
+                    FontSize="20" IsReadOnly="True" Foreground="White" />
+                <controls:DataGridTextColumn 
+                    Header="CHNG IN OI" 
+                    Width="130"
+                    Binding="{Binding CeCoi}" 
+                    FontSize="20" Foreground="White" />
+                <controls:DataGridTextColumn 
+                    Header="VOIUME" 
+                    Width="130"
+                    Binding="{Binding CeVolume}" 
+                    FontSize="20" Foreground="White" />
+                <controls:DataGridTextColumn 
+                    Header="P.CHANGE" 
+                    Width="100"
+                    Binding="{Binding CePchng}" 
+                    FontSize="20" />
+                <controls:DataGridTextColumn 
+                    Header="STRIKE PRICE" 
+                    Width="150"
+                    Binding="{Binding StrikePrice}" 
+                    FontSize="22" Foreground="#FF84FCFF" IsReadOnly="True" />
+                <controls:DataGridTextColumn 
+                    Header="P.CHANGE" 
+                    Width="100"
+                    Binding="{Binding PePchng}" 
+                    FontSize="20" />
+                <controls:DataGridTextColumn 
+                    Header="VOLUME" 
+                    Width="130"
+                    Binding="{Binding PeVolume}" 
+                    FontSize="20" />
+                <controls:DataGridTextColumn 
+                    Header="CHNG IN OI" 
+                    Width="130"
+                    Binding="{Binding PeCoi}" 
+                    FontSize="20" />
+                <controls:DataGridTextColumn 
+                    Header="OI" 
+                    Width="130"
+                    Binding="{Binding PeOi}" 
+                    FontSize="20" />
+                <controls:DataGridTextColumn 
+                    Header="INTERPRETATION" 
+                    Width="180"
+                    Binding="{Binding PeInterpretation}" 
+                    FontSize="20" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+        <TextBox x:ConnectionId='6' x:Name="pcrText" TextAlignment="Center" Canvas.Left="474" TextWrapping="Wrap" Text="PCR - 1.8" Canvas.Top="50" Height="38" Width="160" FontSize="20" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button x:ConnectionId='7' x:Name="updateDataBtn" Content="UPDATE" Canvas.Left="1322" Canvas.Top="50" Width="218" VerticalAlignment="Top" Height="57" FontSize="36"                         />
+        <TextBox x:ConnectionId='8' x:Name="lastUpdateText" Canvas.Left="1097" TextAlignment="Center" Text="01:49:55" Canvas.Top="50" HorizontalAlignment="Left" Height="38" VerticalAlignment="Center" Width="193" FontSize="22" TextWrapping="Wrap" IsReadOnly="True"/>
+        <TextBox x:ConnectionId='9' x:Name="currentTime" Canvas.Left="767" TextAlignment="Center" Text="01:49:55" Canvas.Top="50" Height="38" Width="193" FontSize="22" TextWrapping="Wrap" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <TextBlock Canvas.Left="994" TextWrapping="Wrap" Text="Last Update" Canvas.Top="59" FontSize="18"/>
+    </Canvas>
+
+</Page>
+

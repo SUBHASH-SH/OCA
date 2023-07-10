@@ -61,10 +61,11 @@ namespace OCA
         String url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
         // how to get response form ssl encreption
         int incData = 0;
+        int underlyingVal;
         private DispatcherTimer timer;
 
         private List<OIViewModel1> OIViewModel { get; set; }
-        
+
 
         public MainPage()
         {
@@ -93,13 +94,21 @@ namespace OCA
             List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
 
             OIViewModel = new List<OIViewModel1>();
-
+            int i = 0;
+           
             foreach (var Data in FilteredData1.Zip(FilteredData2, (a,b) => new { A = a, B = b }))
             {
+
                 Filtered data1 = Data.A;
                 Filtered data2 = Data.B;
 
-                if (data1.CE.strikePrice == data2.CE.strikePrice)
+                String CeInterpretation = "NOT SURE";
+                String PeInterpretation = "NOT SURE";
+
+                //1 is the current data.
+                //2 is the older data.
+
+                if ((data1.CE.strikePrice > underlyingVal - 200) && (data1.CE.strikePrice == data2.CE.strikePrice))
                 {
                     int CeOi1 = (int)data1.CE.openInterest, CeCoi1 = (int)data1.CE.changeinOpenInterest,
                             CeVolume1 = data1.CE.totalTradedVolume, CePchng1 = (int)data1.CE.lastPrice,
@@ -111,28 +120,78 @@ namespace OCA
                                 PePchng2 = (int)data2.PE.lastPrice, PeVolume2 = data2.PE.totalTradedVolume,
                                 PeCoi2 = (int)data2.PE.changeinOpenInterest, PeOi2 = (int)data2.PE.openInterest;
 
-                    OIViewModel1 oIViewModel = new OIViewModel1("Short Buildup", (CeOi1 - CeOi2).ToString(),
-                                                                                (CeCoi1 - CeCoi2).ToString(),
-                                                                                (CeVolume1 - CeVolume2).ToString(),
-                                                                                (CePchng1 - CePchng2).ToString(),
-                                                                                data1.CE.strikePrice.ToString(),
-                                                                                (PePchng1 - PePchng2).ToString(),
-                                                                                (PeVolume1 - PeVolume2).ToString(),
-                                                                                (PeCoi1 - PeCoi2).ToString(),
-                                                                                (PeOi1 - PeOi2).ToString(),
-                                                                "Short Buildup");
-                    OIViewModel.Add(oIViewModel);
+                    if (CePchng1 > CePchng2 && CeOi1 > CeOi2){
+                        CeInterpretation = "Long Call Buildup";
+                    } else if (CePchng1 < CePchng2 && CeOi1 > CeOi2) {
+                        CeInterpretation = "Call short Buildup";
+                    }else if (CePchng1 > CePchng2 && CeOi1 < CeOi2)
+                    {
+                        CeInterpretation = "Short Covering";
+                    }else if (CePchng1 < CePchng2 && CeOi1 < CeOi2)
+                    {
+                        CeInterpretation = "Call Writing";
+                    }
+
+                    if (PePchng1 > PePchng2 && PeOi1 > PeOi2)
+                    {
+                        PeInterpretation = "Long Call Buildup";
+                    }
+                    else if (PePchng1 < PePchng2 && PeOi1 > PeOi2)
+                    {
+                        PeInterpretation = "Call short Buildup";
+                    }
+                    else if (PePchng1 > PePchng2 && PeOi1 < PeOi2)
+                    {
+                        PeInterpretation = "Short Covering";
+                    }
+                    else if (PePchng1 < PePchng2 && PeOi1 < PeOi2)
+                    {
+                        PeInterpretation = "Call Writing";
+                    }
+
+                    
+
+                      OIViewModel1 oIViewMode1 = new OIViewModel1("", CeOi1.ToString(),
+                                                                                    CeCoi1.ToString(),
+                                                                                    CeVolume1.ToString(),
+                                                                                    CePchng1.ToString(),
+                                                                                    data1.CE.strikePrice.ToString(),
+                                                                                    PePchng1.ToString(),
+                                                                                    PeVolume1.ToString(),
+                                                                                    PeCoi1.ToString(),
+                                                                                    PeOi1.ToString(),
+                                                                    "");
+                      OIViewModel.Add(oIViewMode1);
+                      
+
+                      OIViewModel1 oIViewMode2 = new OIViewModel1(CeInterpretation, (CeOi1 - CeOi2).ToString(),
+                                                                                    (CeCoi1 - CeCoi2).ToString(),
+                                                                                    (CeVolume1 - CeVolume2).ToString(),
+                                                                                    (CePchng1 - CePchng2).ToString(),
+                                                                                    data1.CE.strikePrice.ToString(),
+                                                                                    (PePchng1 - PePchng2).ToString(),
+                                                                                    (PeVolume1 - PeVolume2).ToString(),
+                                                                                    (PeCoi1 - PeCoi2).ToString(),
+                                                                                    (PeOi1 - PeOi2).ToString(),
+                                                                    PeInterpretation);
+                      OIViewModel.Add(oIViewMode2);
+                       
+
+
+                    
                 }
                 else 
                 {
                     updateDataBtn.Content = "RE-TRY";   
                 }
+                updateDataBtn.Content = "UPDATE";
 
-                
+                if (data1.CE.strikePrice > underlyingVal + 300) { break; }
+
             }  
 
             dataGrid1.ItemsSource = OIViewModel;
-            
+
         }
 
         public async Task GetData() 
@@ -174,9 +233,9 @@ namespace OCA
                     /*string dataData = data.ToString();                      
                     string timeStamp = timestamp.ToString();               // use it Directly.
                     string strikePrices = strikeprices.ToString();  // use it Directly.*/
-
+                    
                     double number = double.Parse(underlyingvalue.ToString());
-                    int underlyingVal = (int)number;
+                    underlyingVal = (int)number;
                     IndexText.Text = underlyingVal.ToString();
 
                     string filteredData = filtered.ToString();
@@ -206,10 +265,10 @@ namespace OCA
                     {
                         
 
-                        if (str.strikePrice > underlyingVal - 400) //18,398
+                        if (str.strikePrice > 18000) //take all strike prices between 18000 to 21000
                         {
 
-                            if (count < 17)
+                            if (count < 60)
                             {
 
                                 string json = JsonConvert.SerializeObject(str);
@@ -217,7 +276,7 @@ namespace OCA
                                 await FileIO.AppendTextAsync(file, json);
                                 
 
-                                if (count < 16) {
+                                if (count < 59) {
                                    await FileIO.AppendTextAsync(file, ",");
                                     
                                 };
@@ -225,6 +284,7 @@ namespace OCA
                                 Debug.WriteLine(str.strikePrice);
 
                             }
+                            if (str.strikePrice == 21000) { break; }
                             
                             count++;
                         }

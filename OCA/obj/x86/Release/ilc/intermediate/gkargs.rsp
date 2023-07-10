@@ -1,0 +1,10 @@
+﻿"D:\Git\OCA\OCA\obj\x86\Release\ilc\in\Microsoft.Toolkit.Uwp.UI.Controls.DataGrid.dll"
+"D:\Git\OCA\OCA\obj\x86\Release\ilc\in\Newtonsoft.Json.dll"
+"D:\Git\OCA\OCA\obj\x86\Release\ilc\in\OCA.exe"
+/Lib:"D:\Git\OCA\OCA\obj\x86\Release\ilc\in"
+/Lib:"C:\Program Files (x86)\Microsoft SDKs\UWPNuGetPackages\runtime.win10-x86.microsoft.net.native.compiler\2.2.12-rel-31116-00\tools\x86\ilc\lib\Private"
+/WinMD:"D:\Git\OCA\OCA\obj\x86\Release\ilc\in\WinMetadata\Microsoft.UI.Xaml.winmd"
+/WinMD:"D:\Git\OCA\OCA\obj\x86\Release\ilc\in\WinMetadata\Windows.winmd"
+/VSTelemetrySessionSettings:"{\"IsOptedIn\":true,\"HostName\":\"Dev14\",\"AppInsightsInstrumentationKey\":\"f144292e-e3b2-4011-ac90-20e5c03fbce5\",\"AsimovInstrumentationKey\":\"AIF-312cbd79-9dbb-4c48-a7da-3cc2a931cb70\",\"AppId\":1001,\"UserId\":\"8aab0975-eb1c-4ebd-9b2c-5e899e094015\",\"Id\":\"bf699787-4515-4f07-b8ae-d5a171d85a50\",\"ProcessStartTime\":638240282381591131,\"SkuName\":\"VS_Community\",\"VSExeVersion\":\"17.4.33213.308\",\"BucketFiltersToEnableWatsonForFaults\":[],\"BucketFiltersToAddDumpsToFaults\":[{\"AdditionalProperties\":[{\"Key\":\"DumpType\",\"Value\":\"Heap\"}],\"Id\":\"08b7338a-fcbb-436f-9de8-a963bc4c9a46\",\"WatsonEventType\":\"VisualStudioNonFatalErrors2\",\"BucketParameterFilters\":[null,null,\"(?i)vs.telemetryapi.identity.hardwareidfault\",\"(?i)system.argumentnullexception\",\"(?i)mscorlib\",\"(?i)system.lazy`1.createvalue\",null,null,null,null]},{\"AdditionalProperties\":[{\"Key\":\"DumpType\",\"Value\":\"Heap\"}],\"Id\":\"e9940337-2ead-49ca-8069-098d308bf8c0\",\"WatsonEventType\":\"VisualStudioNonFatalErrors2\",\"BucketParameterFilters\":[null,null,\"vs.fault.faulttest\",null,null,null,null,null,null,null]}]}"
+/RdXmlPath:"C:\Program Files (x86)\Microsoft SDKs\UWPNuGetPackages\microsoft.net.native.compiler\2.2.12-rel-31116-00\tools\LibraryXML"
+/RunOnlyPreDR

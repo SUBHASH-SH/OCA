@@ -18,7 +18,7 @@
 
         <controls:DataGrid x:Name="dataGrid1"  HeadersVisibility="Column" AlternatingRowBackground="LightGray"
             Height="800" Width ="1490"
-            ItemsSource="{x:Bind OIViewModel}" Canvas.Left="50" Canvas.Top="160" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" FontStyle="Normal" RequestedTheme="Default" FontSize="12" BorderThickness="0,1,1,0" GridLinesVisibility="All" XYFocusDownNavigationStrategy="Auto" AreRowDetailsFrozen="True" RowBackground="White" AutoGenerateColumns="False" ColumnWidth="23">
+            ItemsSource="{x:Bind OIViewModel}" Canvas.Left="50" Canvas.Top="122" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" FontStyle="Normal" RequestedTheme="Default" FontSize="12" BorderThickness="0,1,1,0" GridLinesVisibility="All" XYFocusDownNavigationStrategy="Auto" AreRowDetailsFrozen="True" RowBackground="White" AutoGenerateColumns="False" ColumnWidth="23" HorizontalAlignment="Center" VerticalAlignment="Top">
             <controls:DataGrid.HorizontalGridLinesBrush>
                 <SolidColorBrush Color="#66000FFF" Opacity="0.4"/>
             </controls:DataGrid.HorizontalGridLinesBrush>
@@ -36,57 +36,57 @@
                     Header="INTERPRETATION" 
                     Width="180"
                     Binding="{Binding CeInterpretation}" 
-                    FontSize="22" FontStyle="Normal" IsReadOnly="True" MaxWidth="180" MinWidth="180" />
+                    FontSize="14" FontStyle="Normal" IsReadOnly="True" MaxWidth="180" MinWidth="180" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="OI" 
                     Width="130"
                     Binding="{Binding CeOi}" 
-                    FontSize="20" IsReadOnly="True" />
+                    FontSize="20" IsReadOnly="True" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="CHNG IN OI" 
                     Width="130"
                     Binding="{Binding CeCoi}" 
-                    FontSize="20" />
+                    FontSize="20" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="VOIUME" 
                     Width="130"
                     Binding="{Binding CeVolume}" 
-                    FontSize="20" />
+                    FontSize="20" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="P.CHANGE" 
                     Width="100"
                     Binding="{Binding CePchng}" 
-                    FontSize="20" />
+                    FontSize="20" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="STRIKE PRICE" 
                     Width="150"
                     Binding="{Binding StrikePrice}" 
-                    FontSize="22" Foreground="#FF84FCFF" IsReadOnly="True" />
+                    FontSize="22" Foreground="#FF1500A9" IsReadOnly="True" />
                 <controls:DataGridTextColumn 
                     Header="P.CHANGE" 
                     Width="100"
                     Binding="{Binding PePchng}" 
-                    FontSize="20" />
+                    FontSize="20" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="VOLUME" 
                     Width="130"
                     Binding="{Binding PeVolume}" 
-                    FontSize="20" />
+                    FontSize="20" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="CHNG IN OI" 
                     Width="130"
                     Binding="{Binding PeCoi}" 
-                    FontSize="20" />
+                    FontSize="20" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="OI" 
                     Width="130"
                     Binding="{Binding PeOi}" 
-                    FontSize="20" />
+                    FontSize="20" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="INTERPRETATION" 
                     Width="180"
                     Binding="{Binding PeInterpretation}" 
-                    FontSize="20" />
+                    FontSize="14" Foreground="Black" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <TextBox x:Name="pcrText" TextAlignment="Center" Canvas.Left="474" TextWrapping="Wrap" Text="PCR - 1.8" Canvas.Top="50" Height="38" Width="160" FontSize="20" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
