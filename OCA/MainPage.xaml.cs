@@ -14,6 +14,12 @@ using System.Timers;
 using System.Threading.Tasks;
 using System.Threading;
 using Windows.UI.Xaml;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
+using Microsoft.Toolkit.Uwp.UI.Controls.Primitives;
+using Windows.UI.Composition;
+using System.Collections.ObjectModel;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -53,10 +59,10 @@ namespace OCA
         }
     }
 
-        /// <summary>
-        /// An empty page that can be used on its own or navigated to within a Frame.
-        /// </summary>
-        public sealed partial class MainPage : Page
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class MainPage : Page
     {
         String url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
         // how to get response form ssl encreption
@@ -65,12 +71,15 @@ namespace OCA
         private DispatcherTimer timer;
 
         private List<OIViewModel1> OIViewModel { get; set; }
+        
 
 
         public MainPage()
         {
-            
+
             this.InitializeComponent();
+            selectOption.Items.Add("NIFTY");
+            selectOption.Items.Add("FIN NIFTY");
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
@@ -78,25 +87,27 @@ namespace OCA
             // Start the timer
             timer.Start();
 
+
         }
 
         private async Task updateOiData()
         {
 
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile1 = await storageFolder.GetFileAsync(incData+".json");
+            StorageFile sampleFile1 = await storageFolder.GetFileAsync(incData + ".json");
             string file1 = await FileIO.ReadTextAsync(sampleFile1);
             List<Filtered> FilteredData1 = JsonConvert.DeserializeObject<List<Filtered>>(file1);
 
+           
+            String TimeCreation = sampleFile1.DateCreated.ToString();
 
-            StorageFile sampleFile2 = await storageFolder.GetFileAsync(incData-1+".json");
+            StorageFile sampleFile2 = await storageFolder.GetFileAsync(incData - 1 + ".json");
             string file2 = await FileIO.ReadTextAsync(sampleFile2);
             List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
 
             OIViewModel = new List<OIViewModel1>();
-            int i = 0;
-           
-            foreach (var Data in FilteredData1.Zip(FilteredData2, (a,b) => new { A = a, B = b }))
+
+            foreach (var Data in FilteredData1.Zip(FilteredData2, (a, b) => new { A = a, B = b }))
             {
 
                 Filtered data1 = Data.A;
@@ -108,7 +119,7 @@ namespace OCA
                 //1 is the current data.
                 //2 is the older data.
 
-                if ((data1.CE.strikePrice > underlyingVal - 200) && (data1.CE.strikePrice == data2.CE.strikePrice))
+                if ((data1.CE.strikePrice > underlyingVal - 250) && (data1.CE.strikePrice == data2.CE.strikePrice))
                 {
                     int CeOi1 = (int)data1.CE.openInterest, CeCoi1 = (int)data1.CE.changeinOpenInterest,
                             CeVolume1 = data1.CE.totalTradedVolume, CePchng1 = (int)data1.CE.lastPrice,
@@ -120,14 +131,19 @@ namespace OCA
                                 PePchng2 = (int)data2.PE.lastPrice, PeVolume2 = data2.PE.totalTradedVolume,
                                 PeCoi2 = (int)data2.PE.changeinOpenInterest, PeOi2 = (int)data2.PE.openInterest;
 
-                    if (CePchng1 > CePchng2 && CeOi1 > CeOi2){
+                    if (CePchng1 > CePchng2 && CeOi1 > CeOi2)
+                    {
                         CeInterpretation = "Long Call Buildup";
-                    } else if (CePchng1 < CePchng2 && CeOi1 > CeOi2) {
+                    }
+                    else if (CePchng1 < CePchng2 && CeOi1 > CeOi2)
+                    {
                         CeInterpretation = "Call short Buildup";
-                    }else if (CePchng1 > CePchng2 && CeOi1 < CeOi2)
+                    }
+                    else if (CePchng1 > CePchng2 && CeOi1 < CeOi2)
                     {
                         CeInterpretation = "Short Covering";
-                    }else if (CePchng1 < CePchng2 && CeOi1 < CeOi2)
+                    }
+                    else if (CePchng1 < CePchng2 && CeOi1 < CeOi2)
                     {
                         CeInterpretation = "Call Writing";
                     }
@@ -149,62 +165,63 @@ namespace OCA
                         PeInterpretation = "Call Writing";
                     }
 
-                    
-
-                      OIViewModel1 oIViewMode1 = new OIViewModel1("", CeOi1.ToString(),
-                                                                                    CeCoi1.ToString(),
-                                                                                    CeVolume1.ToString(),
-                                                                                    CePchng1.ToString(),
-                                                                                    data1.CE.strikePrice.ToString(),
-                                                                                    PePchng1.ToString(),
-                                                                                    PeVolume1.ToString(),
-                                                                                    PeCoi1.ToString(),
-                                                                                    PeOi1.ToString(),
-                                                                    "");
-                      OIViewModel.Add(oIViewMode1);
-                      
-
-                      OIViewModel1 oIViewMode2 = new OIViewModel1(CeInterpretation, (CeOi1 - CeOi2).ToString(),
-                                                                                    (CeCoi1 - CeCoi2).ToString(),
-                                                                                    (CeVolume1 - CeVolume2).ToString(),
-                                                                                    (CePchng1 - CePchng2).ToString(),
-                                                                                    data1.CE.strikePrice.ToString(),
-                                                                                    (PePchng1 - PePchng2).ToString(),
-                                                                                    (PeVolume1 - PeVolume2).ToString(),
-                                                                                    (PeCoi1 - PeCoi2).ToString(),
-                                                                                    (PeOi1 - PeOi2).ToString(),
-                                                                    PeInterpretation);
-                      OIViewModel.Add(oIViewMode2);
-                       
 
 
-                    
+                    OIViewModel1 oIViewMode1 = new OIViewModel1("", CeOi1.ToString(),
+                                                                                  CeCoi1.ToString(),
+                                                                                  CeVolume1.ToString(),
+                                                                                  CePchng1.ToString(),
+                                                                                  data1.CE.strikePrice.ToString(),
+                                                                                  PePchng1.ToString(),
+                                                                                  PeVolume1.ToString(),
+                                                                                  PeCoi1.ToString(),
+                                                                                  PeOi1.ToString(),
+                                                                  "");
+                    OIViewModel.Add(oIViewMode1);
+
+
+                    OIViewModel1 oIViewMode2 = new OIViewModel1(CeInterpretation, (CeOi1 - CeOi2).ToString(),
+                                                                                  (CeCoi1 - CeCoi2).ToString(),
+                                                                                  (CeVolume1 - CeVolume2).ToString(),
+                                                                                  (CePchng1 - CePchng2).ToString(),
+                                                                                  data1.CE.strikePrice.ToString(),
+                                                                                  (PePchng1 - PePchng2).ToString(),
+                                                                                  (PeVolume1 - PeVolume2).ToString(),
+                                                                                  (PeCoi1 - PeCoi2).ToString(),
+                                                                                  (PeOi1 - PeOi2).ToString(),
+                                                                  PeInterpretation);
+                    OIViewModel.Add(oIViewMode2);
+
+
+
+
                 }
-                else 
+                else
                 {
-                    updateDataBtn.Content = "RE-TRY";   
+                    updateDataBtn.Content = "RE-TRY";
                 }
                 updateDataBtn.Content = "UPDATE";
 
-                if (data1.CE.strikePrice > underlyingVal + 300) { break; }
+                if (data1.CE.strikePrice > underlyingVal + 250) { break; }
 
-            }  
+            }
 
             dataGrid1.ItemsSource = OIViewModel;
-
+            
         }
 
-        public async Task GetData() 
+        public async Task GetData()
         {
-            try {
+            try
+            {
 
                 HttpClient client = new HttpClient();
 
                 client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
-                
+
                 HttpResponseMessage response = client.GetAsync(url).Result;
 
-               
+
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -213,7 +230,7 @@ namespace OCA
                     HttpResponseMessage responseHeadders = client.GetAsync(requestUri).Result;
 
                     string responseBody = responseHeadders.Content.ReadAsStringAsync().Result;
-                    
+
 
                     // Parse the JSON string into a JObject
                     JObject jsonObject = JObject.Parse(responseBody);
@@ -233,7 +250,11 @@ namespace OCA
                     /*string dataData = data.ToString();                      
                     string timeStamp = timestamp.ToString();               // use it Directly.
                     string strikePrices = strikeprices.ToString();  // use it Directly.*/
-                    
+
+                    while (underlyingvalue.ToString() == null) {
+                        underlyingvalue = jsonObject.SelectToken("records.underlyingValue");
+                    }
+
                     double number = double.Parse(underlyingvalue.ToString());
                     underlyingVal = (int)number;
                     IndexText.Text = underlyingVal.ToString();
@@ -256,14 +277,15 @@ namespace OCA
 
                     //String todaysDate = DateTime.Now.ToString().Replace(':','-');
 
-                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(incData+".json");
+                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(incData + ".json");
                     
+
                     await FileIO.AppendTextAsync(file, "[");
-                    
+
                     //for first time
-                    foreach (Filtered str in FilteredData) 
+                    foreach (Filtered str in FilteredData)
                     {
-                        
+
 
                         if (str.strikePrice > 18000) //take all strike prices between 18000 to 21000
                         {
@@ -274,46 +296,39 @@ namespace OCA
                                 string json = JsonConvert.SerializeObject(str);
                                 // write string to a file
                                 await FileIO.AppendTextAsync(file, json);
-                                
 
-                                if (count < 59) {
-                                   await FileIO.AppendTextAsync(file, ",");
-                                    
+
+                                if (count < 59)
+                                {
+                                    await FileIO.AppendTextAsync(file, ",");
+
                                 };
 
                                 Debug.WriteLine(str.strikePrice);
 
                             }
                             if (str.strikePrice == 21000) { break; }
-                            
+
                             count++;
                         }
-                        
+
 
                     }
                     await FileIO.AppendTextAsync(file, "]");
-                    /*StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-                    StorageFile sampleFile = await storageFolder.GetFileAsync("myconfig0.json");
-                    string file2 = await FileIO.ReadTextAsync(sampleFile);
-                    List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
-                    List<OIViewModel1> models2 = new List<OIViewModel1>();
-                    foreach (Filtered flr in FilteredData2)
-                    {
-                        
-
-                    }*/
+                    
                 }
             }
-            catch(Exception ex) 
-            { 
-                Debug.WriteLine("Exception Thrown :" +ex); 
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception Thrown :" + ex);
             }
         }
 
         public async void ExecuteMethodsAsync()
         {
             await GetData(); // Wait for the first method to complete
-            if (incData > 0) {
+            if (incData > 0)
+            {
                 await updateOiData(); // Wait for the second method to complete after the first one
             }
             incData++;
@@ -322,15 +337,20 @@ namespace OCA
         private void updateData_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             ExecuteMethodsAsync();
-            DateTime dateTime= DateTime.Now;
+            DateTime dateTime = DateTime.Now;
             lastUpdateText.Text = dateTime.ToString("HH:mm:ss");
-            
+
         }
         private void Timer_Tick(object sender, object e)
         {
             // Update the clock label with the current time
             DateTime CTime = DateTime.Now;
             currentTime.Text = CTime.ToString("HH:mm:ss");
+        }
+
+        private void updateAIO_Data_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 

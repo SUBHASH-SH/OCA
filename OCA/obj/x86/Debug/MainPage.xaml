@@ -12,18 +12,41 @@
 
 
     <Canvas x:ConnectionId='2' x:Name="graphCanvas" Background="#FFB9B9B9" Margin="0,0,0,10" >
-        <TextBox x:ConnectionId='3' x:Name="Symbole" TextAlignment="Center" Canvas.Left="52" TextWrapping="Wrap" Text="NIFTY" Canvas.Top="50" Height="38" Width="160" FontSize="20" InputScope="Text" IsReadOnly="True"/>
-        <TextBox x:ConnectionId='4' x:Name="IndexText" TextAlignment="Center" Canvas.Left="262" TextWrapping="Wrap" Text="19000" Canvas.Top="50" Height="38" Width="160" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" IsReadOnly="True"/>
+        <TextBox x:ConnectionId='3' x:Name="IndexText" TextAlignment="Center" Canvas.Left="509" TextWrapping="Wrap" Text="19000" Canvas.Top="98" Height="38" Width="102" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" IsReadOnly="True" FocusVisualPrimaryBrush="White" FocusVisualSecondaryBrush="#99FFFFFF" Foreground="White" SelectionHighlightColorWhenNotFocused="White" RenderTransformOrigin="0.5,0.5">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush.RelativeTransform>
+                        <CompositeTransform CenterY="0.5" CenterX="0.5" Rotation="90"/>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="#FF880000"/>
+                    <GradientStop Color="#FF309400" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+            <TextBox.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="90"/>
+                            <TranslateTransform X="1" Y="-5.55112E-17"/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="#FF8C0000"/>
+                    <GradientStop Color="#FF309400" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.Background>
+        </TextBox>
 
 
-        <controls:DataGrid x:ConnectionId='5' x:Name="dataGrid1"  HeadersVisibility="Column" AlternatingRowBackground="LightGray"
-            Height="800" Width ="1490"
-                                               Canvas.Left="50" Canvas.Top="122" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" FontStyle="Normal" RequestedTheme="Default" FontSize="12" BorderThickness="0,1,1,0" GridLinesVisibility="All" XYFocusDownNavigationStrategy="Auto" AreRowDetailsFrozen="True" RowBackground="White" AutoGenerateColumns="False" ColumnWidth="23" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <controls:DataGrid x:ConnectionId='4' x:Name="dataGrid1"  HeadersVisibility="Column" AlternatingRowBackground="White"
+            Height="760" Width ="1020"
+                                               Canvas.Left="50" Canvas.Top="136" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" FontStyle="Normal" RequestedTheme="Default" FontSize="6" BorderThickness="0,1,1,0" GridLinesVisibility="All" XYFocusDownNavigationStrategy="Auto" AreRowDetailsFrozen="True" RowBackground="#FFC0FFFB" AutoGenerateColumns="False" ColumnWidth="23" HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" BorderBrush="Black" AlternatingRowForeground="#FFABB8FF" RowHeight="2">
             <controls:DataGrid.HorizontalGridLinesBrush>
-                <SolidColorBrush Color="#66000FFF" Opacity="0.4"/>
+                <SolidColorBrush Color="Black" Opacity="0.5"/>
             </controls:DataGrid.HorizontalGridLinesBrush>
             <controls:DataGrid.VerticalGridLinesBrush>
-                <SolidColorBrush Color="#660010FF" Opacity="0.4"/>
+                <SolidColorBrush Color="Black" Opacity="0.5"/>
             </controls:DataGrid.VerticalGridLinesBrush>
             <controls:DataGrid.CellStyle>
                 <Style TargetType="controls:DataGridCell">
@@ -34,66 +57,144 @@
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn
                     Header="INTERPRETATION" 
-                    Width="180"
+                    Width="135"
                     Binding="{Binding CeInterpretation}" 
-                    FontSize="14" FontStyle="Normal" IsReadOnly="True" MaxWidth="180" MinWidth="180" Foreground="Black" />
+                    FontSize="12" FontStyle="Normal" IsReadOnly="True" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="OI" 
-                    Width="130"
+                    Width="90"
                     Binding="{Binding CeOi}" 
-                    FontSize="20" IsReadOnly="True" Foreground="Black" />
+                    FontSize="12" IsReadOnly="True" Foreground="Black" />
                 <controls:DataGridTextColumn 
-                    Header="CHNG IN OI" 
-                    Width="130"
+                    Header="COI" 
+                    Width="90"
                     Binding="{Binding CeCoi}" 
-                    FontSize="20" Foreground="Black" />
+                    FontSize="12" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="VOIUME" 
-                    Width="130"
+                    Width="100"
                     Binding="{Binding CeVolume}" 
-                    FontSize="20" Foreground="Black" />
+                    FontSize="12" Foreground="Black" />
                 <controls:DataGridTextColumn 
-                    Header="P.CHANGE" 
-                    Width="100"
+                    Header="P" 
+                    Width="55"
                     Binding="{Binding CePchng}" 
-                    FontSize="20" Foreground="Black" />
+                    FontSize="12" Foreground="Black" />
                 <controls:DataGridTextColumn 
-                    Header="STRIKE PRICE" 
-                    Width="150"
+                    Header="STRIKE" 
+                    Width="80"
                     Binding="{Binding StrikePrice}" 
-                    FontSize="22" Foreground="#FF1500A9" IsReadOnly="True" />
+                    FontSize="12" Foreground="#FF1500A9" IsReadOnly="True" />
                 <controls:DataGridTextColumn 
-                    Header="P.CHANGE" 
-                    Width="100"
+                    Header="P" 
+                    Width="55"
                     Binding="{Binding PePchng}" 
-                    FontSize="20" Foreground="Black" />
+                    FontSize="12" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="VOLUME" 
-                    Width="130"
+                    Width="100"
                     Binding="{Binding PeVolume}" 
-                    FontSize="20" Foreground="Black" />
+                    FontSize="12" Foreground="Black" />
                 <controls:DataGridTextColumn 
-                    Header="CHNG IN OI" 
-                    Width="130"
+                    Header="COI" 
+                    Width="90"
                     Binding="{Binding PeCoi}" 
-                    FontSize="20" Foreground="Black" />
+                    FontSize="12" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="OI" 
-                    Width="130"
+                    Width="90"
                     Binding="{Binding PeOi}" 
-                    FontSize="20" Foreground="Black" />
+                    FontSize="12" Foreground="Black" />
                 <controls:DataGridTextColumn 
                     Header="INTERPRETATION" 
-                    Width="180"
+                    Width="135"
                     Binding="{Binding PeInterpretation}" 
-                    FontSize="14" Foreground="Black" />
+                    FontSize="12" Foreground="Black" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <TextBox x:ConnectionId='6' x:Name="pcrText" TextAlignment="Center" Canvas.Left="474" TextWrapping="Wrap" Text="PCR - 1.8" Canvas.Top="50" Height="38" Width="160" FontSize="20" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Button x:ConnectionId='7' x:Name="updateDataBtn" Content="UPDATE" Canvas.Left="1322" Canvas.Top="50" Width="218" VerticalAlignment="Top" Height="57" FontSize="36"                         />
-        <TextBox x:ConnectionId='8' x:Name="lastUpdateText" Canvas.Left="1097" TextAlignment="Center" Text="01:49:55" Canvas.Top="50" HorizontalAlignment="Left" Height="38" VerticalAlignment="Center" Width="193" FontSize="22" TextWrapping="Wrap" IsReadOnly="True"/>
-        <TextBox x:ConnectionId='9' x:Name="currentTime" Canvas.Left="767" TextAlignment="Center" Text="01:49:55" Canvas.Top="50" Height="38" Width="193" FontSize="22" TextWrapping="Wrap" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <TextBlock Canvas.Left="994" TextWrapping="Wrap" Text="Last Update" Canvas.Top="59" FontSize="18"/>
+        <TextBox x:ConnectionId='5' x:Name="pcrText" TextAlignment="Center" Canvas.Left="263" TextWrapping="Wrap" Text="PCR - 1.8" Canvas.Top="41" Height="38" Width="124" FontSize="20" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FF00E8FF" Foreground="Black" BorderBrush="Black"/>
+        <Button x:ConnectionId='6' x:Name="updateDataBtn" Content="UPDATE" Canvas.Left="852" Canvas.Top="31" Width="218" Height="57" FontSize="36"                          Background="#FF000269" VerticalAlignment="Top" BorderBrush="#FF000269"/>
+        <TextBox x:ConnectionId='7' x:Name="lastUpdateText" Canvas.Left="628" TextAlignment="Center" Text="01:49:55" Canvas.Top="41" HorizontalAlignment="Left" Height="38" VerticalAlignment="Top" Width="193" FontSize="22" TextWrapping="Wrap" IsReadOnly="True" BorderBrush="#FF215D00" Background="#66FFFFFF" Foreground="#FF215D00"/>
+        <TextBox x:ConnectionId='8' x:Name="currentTime" Canvas.Left="399" TextAlignment="Center" Text="01:49:55" Canvas.Top="41" Height="38" Width="193" FontSize="22" TextWrapping="Wrap" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF369A00" BorderBrush="#FF369A00" Background="#66FFFFFF" />
+        <TextBlock Canvas.Left="628" TextWrapping="Wrap" Text="Last Update" Canvas.Top="16" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF215D00"/>
+        <TextBox x:ConnectionId='9' x:Name="Symbole_Copy" BorderThickness="0" TextAlignment="Center" Canvas.Left="50" TextWrapping="Wrap" Text="CALL" Canvas.Top="98" Height="38" Width="459" FontSize="20" InputScope="Text" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF309400" BorderBrush="#FF309400" FocusVisualSecondaryBrush="#FF309400" FocusVisualPrimaryBrush="#FF309400" IsTapEnabled="False" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsReadOnly="True"/>
+        <TextBox x:ConnectionId='10' x:Name="Symbole_Copy1" BorderThickness="0" TextAlignment="Center" Canvas.Left="611" TextWrapping="Wrap" Text="PUT" Canvas.Top="98" Height="38" Width="459" FontSize="20" InputScope="Text" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF880000" BorderBrush="#FF880000"/>
+        <TextBlock Canvas.Left="399" TextWrapping="Wrap" Text="Current Time" Canvas.Top="16" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF369A00"/>
+        <ComboBox x:ConnectionId='11' x:Name="selectOption" Canvas.Left="63" Canvas.Top="43" Width="161" Background="#FF000269" BorderBrush="#FF000269"/>
+        <controls:DataGrid x:ConnectionId='12' x:Name="dataGrid2"  HeadersVisibility="Column" AlternatingRowBackground="White"
+            Height="880" Width ="820"
+                                                    Canvas.Left="1089" Canvas.Top="98" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" FontStyle="Normal" RequestedTheme="Default" FontSize="6" BorderThickness="0,1,1,0" GridLinesVisibility="All" XYFocusDownNavigationStrategy="Auto" AreRowDetailsFrozen="True" RowBackground="#FFC0FFFB" AutoGenerateColumns="False" ColumnWidth="23" Background="White" BorderBrush="Black" AlternatingRowForeground="#FFABB8FF" RowHeight="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <controls:DataGrid.HorizontalGridLinesBrush>
+                <SolidColorBrush Color="Black" Opacity="0.5"/>
+            </controls:DataGrid.HorizontalGridLinesBrush>
+            <controls:DataGrid.VerticalGridLinesBrush>
+                <SolidColorBrush Color="Black" Opacity="0.5"/>
+            </controls:DataGrid.VerticalGridLinesBrush>
+            <controls:DataGrid.CellStyle>
+                <Style TargetType="controls:DataGridCell">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </controls:DataGrid.CellStyle>
+
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn
+                    Header="TRND" 
+                    Width="75"
+                    Binding="{Binding CeInterpretation}" 
+                    FontSize="12" FontStyle="Normal" IsReadOnly="True" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="OI" 
+                    Width="80"
+                    Binding="{Binding CeOi}" 
+                    FontSize="12" IsReadOnly="True" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="COI" 
+                    Width="80"
+                    Binding="{Binding CeCoi}" 
+                    FontSize="12" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="VOL" 
+                    Width="80"
+                    Binding="{Binding CeVolume}" 
+                    FontSize="12" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="P" 
+                    Width="55"
+                    Binding="{Binding CePchng}" 
+                    FontSize="12" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="TIME" 
+                    Width="80"
+                    Binding="{Binding TimeStamp}" 
+                    FontSize="12" Foreground="#FF1500A9" IsReadOnly="True" />
+                <controls:DataGridTextColumn 
+                    Header="P" 
+                    Width="55"
+                    Binding="{Binding PePchng}" 
+                    FontSize="12" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="VOL" 
+                    Width="80"
+                    Binding="{Binding PeVolume}" 
+                    FontSize="12" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="COI" 
+                    Width="80"
+                    Binding="{Binding PeCoi}" 
+                    FontSize="12" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="OI" 
+                    Width="80"
+                    Binding="{Binding PeOi}" 
+                    FontSize="12" Foreground="Black" />
+                <controls:DataGridTextColumn 
+                    Header="TRND" 
+                    Width="75"
+                    Binding="{Binding PeInterpretation}" 
+                    FontSize="12" Foreground="Black" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+        <Button x:ConnectionId='13' x:Name="updateAIO_Data" Content="UPDATE" Canvas.Left="1691" Canvas.Top="32" VerticalAlignment="Top" Width="218" Height="57" FontSize="36" Background="#FF006486" BorderBrush="#FF006486"                             />
     </Canvas>
 
 </Page>
