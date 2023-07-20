@@ -20,6 +20,7 @@ using Windows.UI;
 using Microsoft.Toolkit.Uwp.UI.Controls.Primitives;
 using Windows.UI.Composition;
 using System.Collections.ObjectModel;
+using static System.Net.Mime.MediaTypeNames;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -80,6 +81,15 @@ namespace OCA
             this.InitializeComponent();
             selectOption.Items.Add("NIFTY");
             selectOption.Items.Add("FIN NIFTY");
+            choseStrikePrice.Items.Add("19500");
+            choseStrikePrice.Items.Add("19550");
+            choseStrikePrice.Items.Add("19600");
+            choseStrikePrice.Items.Add("19650");
+            choseStrikePrice.Items.Add("19700");
+            choseStrikePrice.Items.Add("19750");
+            choseStrikePrice.Items.Add("19800");
+            choseStrikePrice.Items.Add("19850");
+            choseStrikePrice.Items.Add("19900");
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
@@ -92,18 +102,16 @@ namespace OCA
 
         private async Task updateOiData()
         {
-
+            await Task.Delay(5000);
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile1 = await storageFolder.GetFileAsync(incData + ".json");
-            string file1 = await FileIO.ReadTextAsync(sampleFile1);
-            List<Filtered> FilteredData1 = JsonConvert.DeserializeObject<List<Filtered>>(file1);
-
-           
-            String TimeCreation = sampleFile1.DateCreated.ToString();
 
             StorageFile sampleFile2 = await storageFolder.GetFileAsync(incData - 1 + ".json");
             string file2 = await FileIO.ReadTextAsync(sampleFile2);
             List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
+
+            StorageFile sampleFile1 = await storageFolder.GetFileAsync(incData + ".json");
+            string file1 = await FileIO.ReadTextAsync(sampleFile1);
+            List<Filtered> FilteredData1 = JsonConvert.DeserializeObject<List<Filtered>>(file1);
 
             OIViewModel = new List<OIViewModel1>();
 
@@ -133,36 +141,36 @@ namespace OCA
 
                     if (CePchng1 > CePchng2 && CeOi1 > CeOi2)
                     {
-                        CeInterpretation = "Long Call Buildup";
+                        CeInterpretation = "↑↑ Long Call Buildup";
                     }
                     else if (CePchng1 < CePchng2 && CeOi1 > CeOi2)
                     {
-                        CeInterpretation = "Call short Buildup";
+                        CeInterpretation = "↓↓ Call short Buildup";
                     }
                     else if (CePchng1 > CePchng2 && CeOi1 < CeOi2)
                     {
-                        CeInterpretation = "Short Covering";
+                        CeInterpretation = "↑ Short Covering";
                     }
                     else if (CePchng1 < CePchng2 && CeOi1 < CeOi2)
                     {
-                        CeInterpretation = "Call Writing";
+                        CeInterpretation = "↓ Call Writing";
                     }
 
                     if (PePchng1 > PePchng2 && PeOi1 > PeOi2)
                     {
-                        PeInterpretation = "Long Call Buildup";
+                        PeInterpretation = "↓↓ Put Long Buildup";
                     }
                     else if (PePchng1 < PePchng2 && PeOi1 > PeOi2)
                     {
-                        PeInterpretation = "Call short Buildup";
+                        PeInterpretation = "↑↑ Put short Buildup";
                     }
                     else if (PePchng1 > PePchng2 && PeOi1 < PeOi2)
                     {
-                        PeInterpretation = "Short Covering";
+                        PeInterpretation = "↓ Short Covering";
                     }
                     else if (PePchng1 < PePchng2 && PeOi1 < PeOi2)
                     {
-                        PeInterpretation = "Call Writing";
+                        PeInterpretation = "↑ Call Writing";
                     }
 
 
@@ -210,6 +218,112 @@ namespace OCA
             
         }
 
+        private async Task GetAIO_Data()
+        {
+
+            int increment = 1;
+            OIViewModel = new List<OIViewModel1>();
+            while (increment < 83) {
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+
+                StorageFile sampleFile2 = await storageFolder.GetFileAsync(increment - 1 + ".json");
+                string file2 = await FileIO.ReadTextAsync(sampleFile2);
+                List<Filtered> FilteredData2 = JsonConvert.DeserializeObject<List<Filtered>>(file2);
+
+
+                StorageFile sampleFile1 = await storageFolder.GetFileAsync(increment + ".json");
+                string file1 = await FileIO.ReadTextAsync(sampleFile1);
+                List<Filtered> FilteredData1 = JsonConvert.DeserializeObject<List<Filtered>>(file1);
+
+                String TimeCreation = sampleFile1.DateCreated.ToString();//"17-07-2023 21:50:08 +05:30"
+
+                String stp = choseStrikePrice.SelectedItem.ToString();
+
+                foreach (var Data in FilteredData1.Zip(FilteredData2, (a, b) => new { A = a, B = b }))
+                {
+
+                    Filtered data1 = Data.A;
+                    Filtered data2 = Data.B;
+
+                    String CeInterpretation = "NOT SURE";
+                    String PeInterpretation = "NOT SURE";
+
+                    //1 is the current data.
+                    //2 is the older data.
+
+                    if ((data1.CE.strikePrice == int.Parse(stp)) && (data1.CE.strikePrice == data2.CE.strikePrice))
+                    {
+                        int CeOi1 = (int)data1.CE.openInterest, CeCoi1 = (int)data1.CE.changeinOpenInterest,
+                                CeVolume1 = data1.CE.totalTradedVolume, CePchng1 = (int)data1.CE.lastPrice,
+                                PePchng1 = (int)data1.PE.lastPrice, PeVolume1 = data1.PE.totalTradedVolume,
+                                PeCoi1 = (int)data1.PE.changeinOpenInterest, PeOi1 = (int)data1.PE.openInterest;
+
+                        int CeOi2 = (int)data2.CE.openInterest, CeCoi2 = (int)data2.CE.changeinOpenInterest,
+                                    CeVolume2 = data2.CE.totalTradedVolume, CePchng2 = (int)data2.CE.lastPrice,
+                                    PePchng2 = (int)data2.PE.lastPrice, PeVolume2 = data2.PE.totalTradedVolume,
+                                    PeCoi2 = (int)data2.PE.changeinOpenInterest, PeOi2 = (int)data2.PE.openInterest;
+
+                        if (CePchng1 > CePchng2 && CeOi1 > CeOi2)
+                        {
+                            CeInterpretation = "↑↑ Long Call Buildup";
+                        }
+                        else if (CePchng1 < CePchng2 && CeOi1 > CeOi2)
+                        {
+                            CeInterpretation = "↓↓ Call short Buildup";
+                        }
+                        else if (CePchng1 > CePchng2 && CeOi1 < CeOi2)
+                        {
+                            CeInterpretation = "↑ Short Covering";
+                        }
+                        else if (CePchng1 < CePchng2 && CeOi1 < CeOi2)
+                        {
+                            CeInterpretation = "↓ Call Writing";
+                        }
+
+                        if (PePchng1 > PePchng2 && PeOi1 > PeOi2)
+                        {
+                            PeInterpretation = "↓↓ Put Long Buildup";
+                        }
+                        else if (PePchng1 < PePchng2 && PeOi1 > PeOi2)
+                        {
+                            PeInterpretation = "↑↑ Put short Buildup";
+                        }
+                        else if (PePchng1 > PePchng2 && PeOi1 < PeOi2)
+                        {
+                            PeInterpretation = "↓ Short Covering";
+                        }
+                        else if (PePchng1 < PePchng2 && PeOi1 < PeOi2)
+                        {
+                            PeInterpretation = "↑ Call Writing";
+                        }
+
+
+                        OIViewModel1 oIViewMode2 = new OIViewModel1(CeInterpretation, (CeOi1 - CeOi2).ToString(),
+                                                                                      (CeCoi1 - CeCoi2).ToString(),
+                                                                                      (CeVolume1 - CeVolume2).ToString(),
+                                                                                      (CePchng1 - CePchng2).ToString(),
+                                                                                      TimeCreation.Substring(11,5),
+                                                                                      (PePchng1 - PePchng2).ToString(),
+                                                                                      (PeVolume1 - PeVolume2).ToString(),
+                                                                                      (PeCoi1 - PeCoi2).ToString(),
+                                                                                      (PeOi1 - PeOi2).ToString(),
+                                                                      PeInterpretation);
+                        OIViewModel.Add(oIViewMode2);
+
+
+
+                        break;
+                    }
+                    
+                    
+                }
+                
+                increment++;
+            }
+            OIViewModel.Reverse();
+            dataGrid2.ItemsSource = OIViewModel;
+        }
+
         public async Task GetData()
         {
             try
@@ -251,9 +365,9 @@ namespace OCA
                     string timeStamp = timestamp.ToString();               // use it Directly.
                     string strikePrices = strikeprices.ToString();  // use it Directly.*/
 
-                    while (underlyingvalue.ToString() == null) {
-                        underlyingvalue = jsonObject.SelectToken("records.underlyingValue");
-                    }
+                    
+                    underlyingvalue = jsonObject.SelectToken("records.underlyingValue");
+                    
 
                     double number = double.Parse(underlyingvalue.ToString());
                     underlyingVal = (int)number;
@@ -315,7 +429,11 @@ namespace OCA
 
                     }
                     await FileIO.AppendTextAsync(file, "]");
-                    
+                    if (incData > 0)
+                    {
+                        await updateOiData(); // Wait for the second method to complete after the first one
+                    }
+                    incData++;
                 }
             }
             catch (Exception ex)
@@ -327,11 +445,8 @@ namespace OCA
         public async void ExecuteMethodsAsync()
         {
             await GetData(); // Wait for the first method to complete
-            if (incData > 0)
-            {
-                await updateOiData(); // Wait for the second method to complete after the first one
-            }
-            incData++;
+            
+           
         }
 
         private void updateData_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -348,9 +463,14 @@ namespace OCA
             currentTime.Text = CTime.ToString("HH:mm:ss");
         }
 
+        public async void ExecuteMethodsAsync2()
+        {
+            await GetAIO_Data();
+        }
+
         private void updateAIO_Data_Click(object sender, RoutedEventArgs e)
         {
-
+            ExecuteMethodsAsync2();
         }
     }
 

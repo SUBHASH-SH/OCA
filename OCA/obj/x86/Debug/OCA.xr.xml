@@ -6,13 +6,12 @@
     <RootPropertyPathName Name="PeCoi" />
     <RootPropertyPathName Name="PeVolume" />
     <RootPropertyPathName Name="PePchng" />
-    <RootPropertyPathName Name="TimeStamp" />
+    <RootPropertyPathName Name="StrikePrice" />
     <RootPropertyPathName Name="CePchng" />
     <RootPropertyPathName Name="CeVolume" />
     <RootPropertyPathName Name="CeCoi" />
     <RootPropertyPathName Name="CeOi" />
     <RootPropertyPathName Name="CeInterpretation" />
-    <RootPropertyPathName Name="StrikePrice" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application" />
@@ -107,6 +106,7 @@
       <RootProperty Name="Width" />
       <RootProperty Name="Background" />
       <RootProperty Name="BorderBrush" />
+      <RootProperty Name="Height" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.BindExtension">
       <RootProperty Name="Path" />

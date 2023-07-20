@@ -123,7 +123,7 @@
         <ComboBox x:Name="selectOption" Canvas.Left="63" Canvas.Top="43" Width="161" Background="#FF000269" BorderBrush="#FF000269"/>
         <controls:DataGrid x:Name="dataGrid2"  HeadersVisibility="Column" AlternatingRowBackground="White"
             Height="880" Width ="820"
-            ItemsSource="{x:Bind Path=OIViewModel}" Canvas.Left="1089" Canvas.Top="98" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" FontStyle="Normal" RequestedTheme="Default" FontSize="6" BorderThickness="0,1,1,0" GridLinesVisibility="All" XYFocusDownNavigationStrategy="Auto" AreRowDetailsFrozen="True" RowBackground="#FFC0FFFB" AutoGenerateColumns="False" ColumnWidth="23" Background="White" BorderBrush="Black" AlternatingRowForeground="#FFABB8FF" RowHeight="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+            ItemsSource="{x:Bind Path=OIViewModel}" Canvas.Left="1089" Canvas.Top="98" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" FontStyle="Normal" RequestedTheme="Default" FontSize="6" BorderThickness="0,1,1,0" GridLinesVisibility="All" XYFocusDownNavigationStrategy="Auto" AreRowDetailsFrozen="True" RowBackground="White" AutoGenerateColumns="False" ColumnWidth="23" Background="White" BorderBrush="Black" AlternatingRowForeground="#FFABB8FF" RowHeight="2" HorizontalAlignment="Left" VerticalAlignment="Center">
             <controls:DataGrid.HorizontalGridLinesBrush>
                 <SolidColorBrush Color="Black" Opacity="0.5"/>
             </controls:DataGrid.HorizontalGridLinesBrush>
@@ -165,7 +165,7 @@
                 <controls:DataGridTextColumn 
                     Header="TIME" 
                     Width="80"
-                    Binding="{Binding TimeStamp}" 
+                    Binding="{Binding StrikePrice}" 
                     FontSize="12" Foreground="#FF1500A9" IsReadOnly="True" />
                 <controls:DataGridTextColumn 
                     Header="P" 
@@ -195,6 +195,7 @@
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <Button x:Name="updateAIO_Data" Content="UPDATE" Canvas.Left="1691" Canvas.Top="32" VerticalAlignment="Top" Width="218" Height="57" FontSize="36" Background="#FF006486" BorderBrush="#FF006486" Click="updateAIO_Data_Click"/>
+        <ComboBox x:Name="choseStrikePrice" Canvas.Left="1089" Canvas.Top="32" Width="170" Height="56"/>
     </Canvas>
 
 </Page>
