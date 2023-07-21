@@ -21,6 +21,7 @@ using Microsoft.Toolkit.Uwp.UI.Controls.Primitives;
 using Windows.UI.Composition;
 using System.Collections.ObjectModel;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Net.WebRequestMethods;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -223,7 +224,7 @@ namespace OCA
 
             int increment = 1;
             OIViewModel = new List<OIViewModel1>();
-            while (increment < 83) {
+            while (increment < incData) {
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
 
                 StorageFile sampleFile2 = await storageFolder.GetFileAsync(increment - 1 + ".json");
@@ -237,7 +238,15 @@ namespace OCA
 
                 String TimeCreation = sampleFile1.DateCreated.ToString();//"17-07-2023 21:50:08 +05:30"
 
-                String stp = choseStrikePrice.SelectedItem.ToString();
+                String stp;
+                if (choseStrikePrice.SelectedItem != null)
+                {
+                    stp = choseStrikePrice.SelectedItem.ToString();
+                }
+                else {
+                    stp = "19000";
+                }
+                
 
                 foreach (var Data in FilteredData1.Zip(FilteredData2, (a, b) => new { A = a, B = b }))
                 {
@@ -331,8 +340,16 @@ namespace OCA
 
                 HttpClient client = new HttpClient();
 
-                client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
-
+                client.DefaultRequestHeaders.Add("Authority", "www.nseindia.com");
+                client.DefaultRequestHeaders.Add("Method", "GET");
+                client.DefaultRequestHeaders.Add("Path", "/api/option-chain-indices?symbol=NIFTY");
+                client.DefaultRequestHeaders.Add("Scheme", "https");
+                client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+                client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
+                client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9,hi;q=0.8");
+                client.DefaultRequestHeaders.Add("Cache-Control", "max-age=0");
+                client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
+                
                 HttpResponseMessage response = client.GetAsync(url).Result;
 
 
@@ -444,16 +461,20 @@ namespace OCA
 
         public async void ExecuteMethodsAsync()
         {
-            await GetData(); // Wait for the first method to complete
-            
+            //while (true)
+            //{
+                await GetData(); // Wait for the first method to complete
+                DateTime dateTime = DateTime.Now;
+                lastUpdateText.Text = dateTime.ToString("HH:mm:ss");
+                //await Task.Delay(150000); //60*2.5*1000 = 2.5 min
+            //}
            
         }
 
         private void updateData_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             ExecuteMethodsAsync();
-            DateTime dateTime = DateTime.Now;
-            lastUpdateText.Text = dateTime.ToString("HH:mm:ss");
+            
 
         }
         private void Timer_Tick(object sender, object e)
