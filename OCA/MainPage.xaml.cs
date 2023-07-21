@@ -71,6 +71,7 @@ namespace OCA
         int incData = 0;
         int underlyingVal;
         private DispatcherTimer timer;
+        String newTime, oldTime;
 
         private List<OIViewModel1> OIViewModel { get; set; }
         
@@ -341,13 +342,13 @@ namespace OCA
                 HttpClient client = new HttpClient();
 
                 client.DefaultRequestHeaders.Add("Authority", "www.nseindia.com");
-                client.DefaultRequestHeaders.Add("Method", "GET");
-                client.DefaultRequestHeaders.Add("Path", "/api/option-chain-indices?symbol=NIFTY");
-                client.DefaultRequestHeaders.Add("Scheme", "https");
+               // client.DefaultRequestHeaders.Add("Method", "GET");
+                //client.DefaultRequestHeaders.Add("Path", "/api/option-chain-indices?symbol=NIFTY");
+                //client.DefaultRequestHeaders.Add("Scheme", "https");
                 client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
-                client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
-                client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9,hi;q=0.8");
-                client.DefaultRequestHeaders.Add("Cache-Control", "max-age=0");
+                //client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
+                //client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9,hi;q=0.8");
+                //client.DefaultRequestHeaders.Add("Cache-Control", "max-age=0");
                 client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
                 
                 HttpResponseMessage response = client.GetAsync(url).Result;
@@ -382,7 +383,9 @@ namespace OCA
                     string timeStamp = timestamp.ToString();               // use it Directly.
                     string strikePrices = strikeprices.ToString();  // use it Directly.*/
 
+                    newTime = timestamp.ToString();
                     
+                    Debug.WriteLine(newTime);
                     underlyingvalue = jsonObject.SelectToken("records.underlyingValue");
                     
 
@@ -408,49 +411,52 @@ namespace OCA
 
                     //String todaysDate = DateTime.Now.ToString().Replace(':','-');
 
-                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(incData + ".json");
-                    
+                    if (newTime != oldTime) {
+                        var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(incData + ".json");
 
-                    await FileIO.AppendTextAsync(file, "[");
+                        oldTime = newTime;
+                        lastUpdateText.Text = newTime.Substring(12,8); ;//21-Jul-2023 15:30:00
+                        await FileIO.AppendTextAsync(file, "[");
 
-                    //for first time
-                    foreach (Filtered str in FilteredData)
-                    {
-
-
-                        if (str.strikePrice > 18000) //take all strike prices between 18000 to 21000
+                        //for first time
+                        foreach (Filtered str in FilteredData)
                         {
 
-                            if (count < 60)
+
+                            if (str.strikePrice > 18000) //take all strike prices between 18000 to 21000
                             {
 
-                                string json = JsonConvert.SerializeObject(str);
-                                // write string to a file
-                                await FileIO.AppendTextAsync(file, json);
-
-
-                                if (count < 59)
+                                if (count < 60)
                                 {
-                                    await FileIO.AppendTextAsync(file, ",");
 
-                                };
+                                    string json = JsonConvert.SerializeObject(str);
+                                    // write string to a file
+                                    await FileIO.AppendTextAsync(file, json);
 
-                                Debug.WriteLine(str.strikePrice);
 
+                                    if (count < 59)
+                                    {
+                                        await FileIO.AppendTextAsync(file, ",");
+
+                                    };
+
+                                    Debug.WriteLine(str.strikePrice);
+
+                                }
+                                if (str.strikePrice == 21000) { break; }
+
+                                count++;
                             }
-                            if (str.strikePrice == 21000) { break; }
 
-                            count++;
+
                         }
-
-
+                        await FileIO.AppendTextAsync(file, "]");
+                        if (incData > 0)
+                        {
+                            await updateOiData(); // Wait for the second method to complete after the first one
+                        }
+                        incData++;
                     }
-                    await FileIO.AppendTextAsync(file, "]");
-                    if (incData > 0)
-                    {
-                        await updateOiData(); // Wait for the second method to complete after the first one
-                    }
-                    incData++;
                 }
             }
             catch (Exception ex)
@@ -461,13 +467,14 @@ namespace OCA
 
         public async void ExecuteMethodsAsync()
         {
-            //while (true)
-            //{
+            while (true)
+            {
                 await GetData(); // Wait for the first method to complete
-                DateTime dateTime = DateTime.Now;
-                lastUpdateText.Text = dateTime.ToString("HH:mm:ss");
-                //await Task.Delay(150000); //60*2.5*1000 = 2.5 min
-            //}
+                //DateTime dateTime = DateTime.Now;
+                //lastUpdateText.Text = dateTime.ToString("HH:mm:ss");
+                Random rnd = new Random();
+                await Task.Delay(rnd.Next(5000,10000)); //
+            }
            
         }
 
