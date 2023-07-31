@@ -45,6 +45,7 @@ namespace OCA
     {
         public int strikePrice { get; set; }
         public string expiryDate { get; set; }
+        public string timeStamp { get; set; }
         public CE CE { get; set; }
         public PE PE { get; set; }
     }
